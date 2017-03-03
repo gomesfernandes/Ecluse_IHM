@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file>images/feu_rouge.png</file>
+        <file>images/feu_vert.png</file>
         <file>images/porte1.png</file>
         <file>images/porte2.png</file>
     </qresource>
