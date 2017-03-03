@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2017-03-01T19:23:28
+# Project created by QtCreator 2017-03-03T22:17:42
 #
 #-------------------------------------------------
 
@@ -24,14 +24,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    ecluse.cpp
+        ecluse.cpp \
+    loginwindow.cpp
 
-HEADERS  += mainwindow.h \
-    ecluse.h
+HEADERS  += ecluse.h \
+    loginwindow.h
 
-FORMS    += mainwindow.ui \
-    ecluse.ui
-
-RESOURCES += \
-    images.qrc
+FORMS    += ecluse.ui \
+    loginwindow.ui
