@@ -2,6 +2,7 @@
 #define LOGINWINDOW_H
 
 #include <QMainWindow>
+#include <QMap>
 
 namespace Ui {
 class LoginWindow;
@@ -16,13 +17,16 @@ public:
     ~LoginWindow();
 
 signals:
-    void loginAction();
+    void loginAction(int mode);
 
 private slots:
-    void on_pushButton_clicked();
+    void on_NonAuthBtn_clicked();
+
+    void on_ConnextionBtn_clicked();
 
 private:
     Ui::LoginWindow *ui;
+    QMap<QString,QString> m;
 };
 
 #endif // LOGINWINDOW_H

@@ -1,5 +1,6 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
+#include <QMap>
 
 LoginWindow::LoginWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -7,6 +8,8 @@ LoginWindow::LoginWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("Authentification");
+    m.insert("caty","password");
+    m.insert("simon","12345");
 }
 
 LoginWindow::~LoginWindow()
@@ -14,7 +17,16 @@ LoginWindow::~LoginWindow()
     delete ui;
 }
 
-void LoginWindow::on_pushButton_clicked()
+void LoginWindow::on_NonAuthBtn_clicked()
 {
-    emit loginAction();
+    emit loginAction(1);
+}
+
+void LoginWindow::on_ConnextionBtn_clicked()
+{
+    QString login = ui->loginUser->text();
+    QString mdp = ui->MdpUser->text();
+    if (m.contains(login))
+        if (mdp == m.value(login))
+                emit loginAction(0);
 }

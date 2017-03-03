@@ -17,11 +17,13 @@ public:
     ~Ecluse();
 
 public slots:
-    void stuff();
+    void ouvertureFenetreEcluse(int mode);
 
 private:
     Ui::Ecluse *ui;
     LoginWindow * l;
+    static int modeManuel;
+    static int modeAuto;
 };
 
 #endif // ECLUSE_H
