@@ -1,9 +1,9 @@
 #ifndef SIGNALLUMINEUX_H
 #define SIGNALLUMINEUX_H
 
-#include <QRadioButton>
+#include <QVBoxLayout>
 
-class SignalLumineux: public QRadioButton
+class SignalLumineux: public QVBoxLayout
 {
 public:
     SignalLumineux(QWidget * parent = 0);
