@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>641</width>
-    <height>439</height>
+    <width>683</width>
+    <height>386</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -398,12 +398,18 @@ text-center : true;</string>
       <x>300</x>
       <y>20</y>
       <width>91</width>
-      <height>62</height>
+      <height>46</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="1">
       <widget class="QLineEdit" name="textAmont_Sens">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>AMONT</string>
        </property>
@@ -425,6 +431,12 @@ text-center : true;</string>
      </item>
      <item row="1" column="1">
       <widget class="QLineEdit" name="textAval_Sens">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>AVAL</string>
        </property>
@@ -492,16 +504,6 @@ border-radius : 15px;
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>350</y>
-      <width>481</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="textEntrer_Amont_2">
     <property name="geometry">
      <rect>
@@ -543,15 +545,21 @@ text-center : true;</string>
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>50</y>
+      <x>200</x>
+      <y>30</y>
       <width>87</width>
-      <height>81</height>
+      <height>92</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="4" column="0">
       <widget class="QPushButton" name="pushButton_3">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Arrêter</string>
        </property>
@@ -559,6 +567,12 @@ text-center : true;</string>
      </item>
      <item row="3" column="0">
       <widget class="QPushButton" name="pushButton_2">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Fermer</string>
        </property>
@@ -566,6 +580,12 @@ text-center : true;</string>
      </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="pushButton">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Ouvrir</string>
        </property>
@@ -590,34 +610,52 @@ text-center : true;</string>
     <property name="geometry">
      <rect>
       <x>400</x>
-      <y>50</y>
-      <width>81</width>
-      <height>81</height>
+      <y>30</y>
+      <width>87</width>
+      <height>92</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
-     <item row="4" column="0">
+     <item row="5" column="0">
       <widget class="QPushButton" name="pushButton_7">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Arrêter</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="4" column="0">
       <widget class="QPushButton" name="pushButton_8">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Fermer</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QPushButton" name="pushButton_9">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Ouvrir</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="1" column="0">
       <widget class="QLineEdit" name="lineEdit_4">
        <property name="text">
         <string>PORTE</string>
@@ -635,10 +673,10 @@ text-center : true;</string>
    <widget class="QWidget" name="gridLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>200</x>
       <y>240</y>
-      <width>71</width>
-      <height>61</height>
+      <width>87</width>
+      <height>71</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_5">
@@ -657,6 +695,12 @@ text-center : true;</string>
      </item>
      <item row="3" column="0">
       <widget class="QPushButton" name="pushButton_11">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Fermer</string>
        </property>
@@ -664,6 +708,12 @@ text-center : true;</string>
      </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="pushButton_12">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Ouvrir</string>
        </property>
@@ -674,10 +724,10 @@ text-center : true;</string>
    <widget class="QWidget" name="gridLayoutWidget_5">
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>400</x>
       <y>240</y>
-      <width>71</width>
-      <height>61</height>
+      <width>87</width>
+      <height>71</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_6">
@@ -696,6 +746,12 @@ text-center : true;</string>
      </item>
      <item row="3" column="0">
       <widget class="QPushButton" name="pushButton_13">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Fermer</string>
        </property>
@@ -703,6 +759,12 @@ text-center : true;</string>
      </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="pushButton_14">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
        <property name="text">
         <string>Ouvrir</string>
        </property>
@@ -713,7 +775,7 @@ text-center : true;</string>
    <widget class="QPushButton" name="pushButton_10">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>380</x>
       <y>240</y>
       <width>16</width>
       <height>16</height>
@@ -730,7 +792,7 @@ border-radius : 8px;</string>
    <widget class="QPushButton" name="pushButton_15">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>180</x>
       <y>240</y>
       <width>16</width>
       <height>16</height>
@@ -742,32 +804,6 @@ border-radius : 8px;</string>
     </property>
     <property name="text">
      <string/>
-    </property>
-   </widget>
-   <widget class="Line" name="line">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>330</y>
-      <width>641</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_7">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>350</y>
-      <width>113</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string> ETAT ACTUEL :</string>
     </property>
    </widget>
    <widget class="Line" name="line_2">
@@ -802,7 +838,7 @@ border-radius : 8px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>641</width>
+     <width>683</width>
      <height>25</height>
     </rect>
    </property>
