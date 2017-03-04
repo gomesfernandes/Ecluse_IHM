@@ -7,87 +7,25 @@
     <x>0</x>
     <y>0</y>
     <width>647</width>
-    <height>402</height>
+    <height>397</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Ecluse</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>150</y>
-      <width>24</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="signauxEntreeAval">
-     <item>
-      <widget class="QRadioButton" name="vert">
-       <property name="styleSheet">
-        <string notr="true">QRadioButton::indicator {
-	image:url(:/images/feu_vert.png);
-}</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="rouge">
-       <property name="styleSheet">
-        <string notr="true">QRadioButton::indicator {
-	image:url(:/images/feu_rouge.png);
-}</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>10</y>
-      <width>21</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="choixSens">
-     <item>
-      <widget class="QRadioButton" name="sensAmont">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="sensAval">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QWidget" name="verticalLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>150</y>
-      <width>24</width>
+      <x>180</x>
+      <y>160</y>
+      <width>29</width>
       <height>51</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="signauxSortieAval">
      <item>
-      <widget class="QRadioButton" name="vert_2">
+      <widget class="QRadioButton" name="vertEntrer_Aval">
        <property name="styleSheet">
         <string notr="true">QRadioButton::indicator {
 	image:url(:/images/feu_vert.png);
@@ -99,43 +37,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="rouge_2">
-       <property name="styleSheet">
-        <string notr="true">QRadioButton::indicator {
-	image:url(:/images/feu_rouge.png);
-}</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_4">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>140</y>
-      <width>24</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="signauxSortieAmont">
-     <item>
-      <widget class="QRadioButton" name="vert_3">
-       <property name="styleSheet">
-        <string notr="true">QRadioButton::indicator {
-	image:url(:/images/feu_vert.png);
-}</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="rouge_3">
+      <widget class="QRadioButton" name="rougeEntrer_Aval">
        <property name="styleSheet">
         <string notr="true">QRadioButton::indicator {
 	image:url(:/images/feu_rouge.png);
@@ -151,15 +53,15 @@
    <widget class="QWidget" name="verticalLayoutWidget_5">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>130</y>
-      <width>24</width>
+      <x>490</x>
+      <y>160</y>
+      <width>29</width>
       <height>51</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="signauxEntreeAmont">
      <item>
-      <widget class="QRadioButton" name="vert_4">
+      <widget class="QRadioButton" name="vertEntrer_Amont">
        <property name="styleSheet">
         <string notr="true">QRadioButton::indicator {
 	image:url(:/images/feu_vert.png);
@@ -171,7 +73,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="rouge_4">
+      <widget class="QRadioButton" name="rougeEntrer_Amont">
        <property name="styleSheet">
         <string notr="true">QRadioButton::indicator {
 	image:url(:/images/feu_rouge.png);
@@ -184,40 +86,407 @@
      </item>
     </layout>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="textAval">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>100</y>
-      <width>60</width>
-      <height>16</height>
+      <x>30</x>
+      <y>90</y>
+      <width>81</width>
+      <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: bold;
+
+</string>
     </property>
     <property name="text">
      <string>AVAL</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="textAmont">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>100</y>
-      <width>60</width>
-      <height>16</height>
+      <x>520</x>
+      <y>90</y>
+      <width>111</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: bold;</string>
     </property>
     <property name="text">
      <string>AMONT</string>
     </property>
    </widget>
-   <zorder>verticalLayoutWidget</zorder>
-   <zorder>verticalLayoutWidget_2</zorder>
-   <zorder>verticalLayoutWidget_3</zorder>
-   <zorder>verticalLayoutWidget_4</zorder>
-   <zorder>verticalLayoutWidget_5</zorder>
-   <zorder>vert_2</zorder>
-   <zorder>label</zorder>
-   <zorder>label_2</zorder>
+   <widget class="QLabel" name="bordureHaut">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>140</y>
+      <width>211</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/images/bordure.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="bordureBas">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>220</y>
+      <width>211</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/images/bordure.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="porteAval_Haut">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>130</y>
+      <width>41</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/images/porte2.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="porteAval_Bas">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>170</y>
+      <width>41</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/images/porte1.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="porteAval_Bas_2">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>170</y>
+      <width>41</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/images/porte1.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="porteAval_Haut_2">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>140</y>
+      <width>41</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/images/porte2.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="textSortir">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>170</y>
+      <width>51</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: bold;
+Color : WHITE;
+background-color : E8E8E8;
+text-center : true;</string>
+    </property>
+    <property name="text">
+     <string>SORTIR</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_6">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>160</y>
+      <width>29</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="signauxSortieAmont_2">
+     <item>
+      <widget class="QRadioButton" name="vertSortir_Amont">
+       <property name="styleSheet">
+        <string notr="true">QRadioButton::indicator {
+	image:url(:/images/feu_vert.png);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rougeSortir_Amont">
+       <property name="styleSheet">
+        <string notr="true">QRadioButton::indicator {
+	image:url(:/images/feu_rouge.png);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_7">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>160</y>
+      <width>29</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="signauxSortieAmont_3">
+     <item>
+      <widget class="QRadioButton" name="vertSortir_Aval">
+       <property name="styleSheet">
+        <string notr="true">QRadioButton::indicator {
+	image:url(:/images/feu_vert.png);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rougeSortir_Aval">
+       <property name="styleSheet">
+        <string notr="true">QRadioButton::indicator {
+	image:url(:/images/feu_rouge.png);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="textEntrer_Amont">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>170</y>
+      <width>51</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: bold;
+Color : WHITE;
+background-color : E8E8E8;
+text-center : true;</string>
+    </property>
+    <property name="text">
+     <string>ENTRER</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="textEntrer_Aval">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>170</y>
+      <width>51</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: bold;
+Color : WHITE;
+background-color : E8E8E8;
+text-center : true;</string>
+    </property>
+    <property name="text">
+     <string>ENTRER</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>30</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="textAmont_Sens">
+       <property name="text">
+        <string>AMONT</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QRadioButton" name="sensAmont">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QRadioButton" name="sensAval">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="textAval_Sens">
+       <property name="text">
+        <string>AVAL</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="textSens">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>10</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: bold;</string>
+    </property>
+    <property name="text">
+     <string>SENS</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="textArretUrgence">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>141</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ARRET D'URGENCE</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="boutonArretUrgence">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>20</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color : WHITE;
+border-radius : 15px;
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rouge_3">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>20</y>
+      <width>27</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton::indicator {
+	image:url(:/images/feu_rouge.png);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_4">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>20</y>
+      <width>71</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ALARME</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -225,7 +494,7 @@
      <x>0</x>
      <y>0</y>
      <width>647</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>
@@ -240,6 +509,8 @@
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
  <connections/>
 </ui>
