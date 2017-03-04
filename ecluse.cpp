@@ -12,7 +12,11 @@ Ecluse::Ecluse(QWidget *parent) :
     signalEntreeAmont(new signalLumineux()),
     signalSortieAmont(new signalLumineux()),
     signalEntreeAval(new signalLumineux()),
-    signalSortieAval(new signalLumineux())
+    signalSortieAval(new signalLumineux()),
+    porteAval(new Porte()),
+    porteAmont(new Porte()),
+    vanneAval(new Vanne()),
+    vanneAmont(new Vanne())
 {
     ui->setupUi(this);
 

@@ -5,6 +5,8 @@
 #include <QAbstractButton>
 #include "loginwindow.h"
 #include "signallumineux.h"
+#include "porte.h"
+#include "vanne.h"
 
 namespace Ui {
 class Ecluse;
@@ -33,6 +35,10 @@ private:
     signalLumineux * signalSortieAmont;
     signalLumineux * signalEntreeAval;
     signalLumineux * signalSortieAval;
+    Porte * porteAval;
+    Porte * porteAmont;
+    Vanne * vanneAval;
+    Vanne * vanneAmont;
 };
 
 #endif // ECLUSE_H
