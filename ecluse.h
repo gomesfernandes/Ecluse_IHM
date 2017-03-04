@@ -2,7 +2,9 @@
 #define ECLUSE_H
 
 #include <QMainWindow>
+#include <QAbstractButton>
 #include "loginwindow.h"
+#include "signallumineux.h"
 
 namespace Ui {
 class Ecluse;
@@ -19,11 +21,18 @@ public:
 public slots:
     void ouvertureFenetreEcluse(int mode);
 
+private slots:
+    void changerFeu(QAbstractButton* f);
+
 private:
     Ui::Ecluse *ui;
     LoginWindow * l;
     static int modeManuel;
     static int modeAuto;
+    signalLumineux * signalEntreeAmont;
+    signalLumineux * signalSortieAmont;
+    signalLumineux * signalEntreeAval;
+    signalLumineux * signalSortieAval;
 };
 
 #endif // ECLUSE_H

@@ -1,12 +1,17 @@
 #ifndef SIGNALLUMINEUX_H
 #define SIGNALLUMINEUX_H
 
-#include <QVBoxLayout>
+#include <QDebug>
 
-class SignalLumineux: public QVBoxLayout
+class signalLumineux
 {
+
 public:
-    SignalLumineux(QWidget * parent = 0);
+    signalLumineux();
+    char getCouleur();
+
+private:
+    char couleur;
 };
 
 #endif // SIGNALLUMINEUX_H

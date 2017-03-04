@@ -21,7 +21,6 @@ signals:
 
 private slots:
     void on_NonAuthBtn_clicked();
-
     void on_ConnextionBtn_clicked();
 
 private:

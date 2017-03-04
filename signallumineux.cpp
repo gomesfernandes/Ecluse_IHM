@@ -1,6 +1,8 @@
 #include "signallumineux.h"
 
-SignalLumineux::SignalLumineux(QWidget * parent):
-    QVBoxLayout(parent)
+signalLumineux::signalLumineux() :
+    couleur('r')
 {
 }
+
+char signalLumineux::getCouleur() { return couleur; }
