@@ -161,3 +161,29 @@ void Ecluse::changementEtatPorteAmont(int etat) {
         emit ui->signalEntreeAmont->buttonClicked(ui->vertEntrer_Amont);
     }
 }
+
+void Ecluse::on_btnSortirSas_clicked()
+{
+    sas_occupe = (sas_occupe) ? false : true;
+    if (sens == SENS_AMONT)
+    {
+        // si la porte amont est pas ouverte, => on la ferme
+            // si porte côté aval ouverte => on la ferme
+            // si vanne côté aval ouverte => on la ferme
+            // on équilibre les niveau d'eau entre coté AMONT et écluse
+            // puis on ouvre la porte AMONT
+            // et signal feu vert
+        if()
+
+    }
+    else if (sens == SENS_AVAL)
+    {
+        // si la porte amont est pas ouverte, => on la ferme
+            // si porte côté amont ouverte => on la ferme
+            // si vanne côté amont ouverte => on la ferme
+            // on équilibre les niveau d'eau entre coté AVAL et écluse
+            // puis on ouvre la porte AVAL
+            // et on met signal feu vert
+
+    }
+}
