@@ -173,6 +173,7 @@ void Ecluse::setSignauxVisibles(bool visibilite) {
 void Ecluse::on_btnEntrerAval_clicked() {
     sens = (ui->sensAmont->isChecked()) ? SENS_AMONT : SENS_AVAL;
     if (!sas_occupe) {
+        emit fermerVanneAmont();
         emit fermerPorteAmont();
         emit ouvrirPorteAval();
     }
@@ -198,6 +199,7 @@ void Ecluse::on_btnEntrerAmont_clicked() {
 void Ecluse::changementEtatPorteAval(int etat) {
     QPixmap porte_haut = QPixmap (":/images/porte2.png");
     QPixmap porte_bas = QPixmap (":/images/porte1.png");
+    QPixmap porte_fermee = QPixmap (":/images/portefermee.png");
     switch (etat) {
     case ETAT_EN_OUVERTURE :
         ui->porteAval_Haut->setPixmap(porte_haut);
@@ -207,14 +209,18 @@ void Ecluse::changementEtatPorteAval(int etat) {
         compteurPorteAval--;
         break;
     case ETAT_FERME:
+        compteurPorteAval = 9;
+        ui->porteAval_Haut->setPixmap(porte_fermee);
+        ui->porteAval_Bas->setPixmap(porte_fermee);
         if (sas_occupe) {
             emit ouvrirVanneAmont();
+            qDebug() << " ouvrir vanne amont.." << endl;
         }
         break;
     case ETAT_EN_FERMETURE:
         break;
     case ETAT_OUVERT:
-        compteurPorteAval=9;
+        compteurPorteAval = 9;
         sas_occupe = (sas_occupe) ? false : true;
         ui->statusBar->showMessage("Etat actuel: Passage par porte aval libre");
         ui->vertEntrer_Aval->setChecked(true);
@@ -234,23 +240,37 @@ void Ecluse::changementEtatPorteAval(int etat) {
 void Ecluse::changementEtatPorteAmont(int etat) {
     QPixmap porte_haut = QPixmap (":/images/porte2.png");
     QPixmap porte_bas = QPixmap (":/images/porte1.png");
+    QPixmap porte_fermee = QPixmap (":/images/portefermee.png");
     switch (etat) {
     case ETAT_EN_OUVERTURE :
         ui->porteAmont_Haut->setPixmap(porte_haut);
         ui->porteAmont_Bas->setPixmap(porte_bas);
-        ui->statusBar->showMessage("Temps attente estimé 10 secondes. Temps restant : "+QString::number(compteurPorteAval));
+        ui->statusBar->showMessage("Temps attente estimé 10 secondes. "
+                        " Temps restant : "+QString::number(compteurPorteAmont));
         compteurPorteAmont--;
         break;
     case ETAT_FERME:
+        compteurPorteAmont=9;
+        ui->porteAmont_Haut->setPixmap(porte_fermee);
+        ui->porteAmont_Bas->setPixmap(porte_fermee);
         break;
     case ETAT_EN_FERMETURE:
         break;
     case ETAT_OUVERT:
+        if (sas_occupe) {
+            ui->rougeEntrer_Amont->setChecked(true);
+            ui->vertSortir_Amont->setChecked(true);
+            emit ui->signalEntreeAmont->buttonClicked(ui->rougeEntrer_Amont);
+            emit ui->signalSortieAmont->buttonClicked(ui->vertSortir_Amont);
+        } else {
+            ui->vertEntrer_Amont->setChecked(true);
+            ui->rougeSortir_Amont->setChecked(false);
+            emit ui->signalEntreeAmont->buttonClicked(ui->vertEntrer_Amont);
+            emit ui->signalSortieAmont->buttonClicked(ui->rougeSortir_Amont);
+        }
         compteurPorteAmont=9;
         sas_occupe = (sas_occupe) ? false : true;
         ui->statusBar->showMessage("Etat actuel: Passage par porte amont libre");
-        ui->vertEntrer_Amont->setChecked(true);
-        emit ui->signalEntreeAmont->buttonClicked(ui->vertEntrer_Amont);
         break;
     }
 }
@@ -281,29 +301,15 @@ void Ecluse::on_btnSortirSas_clicked()
 {
     if(sas_occupe == true)
     {
+    qDebug() << "on va sortir" << endl;
         if (sens == SENS_AMONT)
         {
+             qDebug() << "dans le sens amont" << endl;
             ui->statusBar->showMessage("Sortie vers l'amont, fermeture des portes..");
             // FERMETURE DES PORTES
 
             emit fermerPorteAval();
             emit fermerVanneAval();
-    /*
-
-            //Ouverture vanne de la direction
-           // vanneAmont->ouverture();
-            niveau=NIVEAU_HAUT;
-            //Ouverture de la porte dans la direction amont
-
-            //porteAmont->ouverture();
-
-            // il faut remettre le feu d'entrée Amont à rouge
-            // et allumer celui de sortie à vert
-            //ui->rougeEntrer_Amont->setEnabled(true);
-            //ui->vertEntrer_Amont->setDisabled(true);
-            //ui->rougeSortir_Amont->setDisabled(true);
-            //ui->vertEntrer_Amont->setEnabled(true);
-        */
         }
         else if (sens == SENS_AVAL)
         {
@@ -319,8 +325,6 @@ void Ecluse::on_btnSortirSas_clicked()
             //Ouverture de la porte dans la direction amont
             porteAmont->ouverture();
         }
-        // le bateau sort, le sas est maintenant libre
-        sas_occupe = (sas_occupe) ? false : true;
     }
 }
 
@@ -387,12 +391,13 @@ void Ecluse::changementEtatVanneAmont(int etat) {
     if (etat == ETAT_FERME) {
         QPixmap pixmap = QPixmap (":/images/vannefermee.png");
         ui->imageVanneAmont->setPixmap(pixmap);
-        if (sas_occupe) {
-            niveau_timer->start(10000);
-        }
     } else if (etat == ETAT_OUVERT) {
         QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
         ui->imageVanneAmont->setPixmap(pixmap);
+        if (sas_occupe) {
+            niveau_timer->start(10000);
+            qDebug() << " attendre niveau.." << endl;
+        }
     }
 }
 
