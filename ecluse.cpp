@@ -3,9 +3,6 @@
 
 #include <QDebug>
 
-int Ecluse::modeAuto = 1;
-int Ecluse::modeManuel = 0;
-
 Ecluse::Ecluse(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Ecluse),
@@ -47,7 +44,7 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
     this->show();
     l->hide();
 
-    if(mode == 0)
+    if(mode == MODE_AUTO)
     {
         qDebug() << "Ouverture en mode automatique"<< endl;
         for(int i=0 ; i < (ui->operationsPorteAval->count()) ; i++)
@@ -70,7 +67,7 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
         }
 
     }
-    else if (mode == 1)
+    else if (mode == MODE_MANUEL)
     {
         qDebug() << "Ouverture en mode manuel"<< endl;
     }
