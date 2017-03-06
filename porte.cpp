@@ -77,7 +77,7 @@ void Porte::fermeture(){
         etat = ETAT_EN_FERMETURE;
         transition->start(10000);
         intervalles->start(1000);
-        qDebug() << "fermeture de la porte" << endl;
+        qDebug() << " fermeture de la porte" << endl;
     }
 }
 
