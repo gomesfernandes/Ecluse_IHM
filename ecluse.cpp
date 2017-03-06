@@ -46,7 +46,34 @@ Ecluse::~Ecluse()
 void Ecluse::ouvertureFenetreEcluse(int mode) {
     this->show();
     l->hide();
-    qDebug() << "Ouverture en mode " << mode << endl;
+
+    if(mode == 0)
+    {
+        qDebug() << "Ouverture en mode automatique"<< endl;
+        for(int i=0 ; i < (ui->operationsPorteAval->count()) ; i++)
+        {
+            QWidget* widget1 = ui->operationsPorteAval->itemAt(i)->widget();
+            QWidget* widget2= ui->operationsPorteAmont->itemAt(i)->widget();
+            if(widget1 != NULL)
+                widget1->setVisible(false);
+            if(widget2 != NULL)
+                widget2->setVisible(false);
+        }
+        for(int i=0 ; i < (ui->operationsVanneAval->count()) ; i++)
+        {
+            QWidget* widget3 = ui->operationsVanneAval->itemAt(i)->widget();
+            QWidget* widget4= ui->operationsVanneAmont->itemAt(i)->widget();
+            if(widget3 != NULL)
+                widget3->setVisible(false);
+            if(widget4 != NULL)
+                widget4->setVisible(false);
+        }
+
+    }
+    else if (mode == 1)
+    {
+        qDebug() << "Ouverture en mode manuel"<< endl;
+    }
 }
 
 void Ecluse::on_btnEntrerAval_clicked()
@@ -54,7 +81,8 @@ void Ecluse::on_btnEntrerAval_clicked()
     sens = (ui->sensAmont->isChecked()) ? SENS_AMONT : SENS_AVAL;
     qDebug() << "entrée en sens amont -> " << endl;
     if (sas_occupe) {
-        qDebug() << "sas occuee..." << endl;
+        qDebug() << "sas occupé..." << endl;
+
     } else {
         qDebug() << "sas libre, ouverture de la porte..." << endl;
         //emit ouvrirPorteAval();
