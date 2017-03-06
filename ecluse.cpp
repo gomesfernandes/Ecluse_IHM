@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Gomes Fernandes Caty, Hamery Simon                                    *
+ *   L3 Informatique, S6 Printemps                                         *                                              *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "ecluse.h"
 #include "ui_ecluse.h"
 
@@ -38,6 +45,24 @@ Ecluse::Ecluse(QWidget *parent) :
     connect(porteAval,SIGNAL(etatCourant(int)),this,SLOT(changementEtatPorteAval(int)));
     connect(porteAmont,SIGNAL(etatCourant(int)),this,SLOT(changementEtatPorteAmont(int)));
 
+    // gérer la fermeture/ouverture des vannes
+    connect(this,SIGNAL(ouvrirVanneAmont()),vanneAmont,SLOT(ouverture()));
+    connect(this,SIGNAL(ouvrirVanneAval()),vanneAval,SLOT(ouverture()));
+    connect(this,SIGNAL(fermerVanneAmont()),vanneAmont,SLOT(fermeture()));
+    connect(this,SIGNAL(fermerVanneAval()),vanneAval,SLOT(fermeture()));
+    connect(vanneAval,SIGNAL(etatCourant(int)),this,SLOT(changementEtatVanneAval(int)));
+    connect(vanneAmont,SIGNAL(etatCourant(int)),this,SLOT(changementEtatVanneAmont(int)));
+
+    //urgence
+    connect(this,SIGNAL(arretUrgence()),porteAval,SLOT(urgence()));
+    connect(this,SIGNAL(arretUrgence()),porteAmont,SLOT(urgence()));
+    connect(this,SIGNAL(arretUrgence()),vanneAmont,SLOT(urgence()));
+    connect(this,SIGNAL(arretUrgence()),vanneAval,SLOT(urgence()));
+    connect(this,SIGNAL(finAlarme()),porteAval,SLOT(finAlarme()));
+    connect(this,SIGNAL(finAlarme()),porteAmont,SLOT(finAlarme()));
+    connect(this,SIGNAL(finAlarme()),vanneAmont,SLOT(finAlarme()));
+    connect(this,SIGNAL(finAlarme()),vanneAval,SLOT(finAlarme()));
+
     // lancement des threads
     porteAval->run();
     porteAmont->run();
@@ -63,21 +88,34 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
         for(int i=0 ; i < (ui->operationsPorteAval->count()) ; i++)
         {
             QWidget* widget1 = ui->operationsPorteAval->itemAt(i)->widget();
-            QWidget* widget2= ui->operationsPorteAmont->itemAt(i)->widget();
+            QWidget* widget2 = ui->operationsPorteAmont->itemAt(i)->widget();
             if(widget1 != NULL)
                 widget1->setVisible(false);
             if(widget2 != NULL)
                 widget2->setVisible(false);
         }
+
         for(int i=0 ; i < (ui->operationsVanneAval->count()) ; i++)
         {
-            QWidget* widget3 = ui->operationsVanneAval->itemAt(i)->widget();
-            QWidget* widget4= ui->operationsVanneAmont->itemAt(i)->widget();
+            QPushButton* widget3 = qobject_cast<QPushButton*>
+                                (ui->operationsVanneAval->itemAt(i)->widget());
+            QPushButton* widget4= qobject_cast<QPushButton*>
+                                (ui->operationsVanneAmont->itemAt(i)->widget());
             if(widget3 != NULL)
                 widget3->setVisible(false);
             if(widget4 != NULL)
                 widget4->setVisible(false);
         }
+
+        ui->voyantAlarme->setEnabled(false);
+        ui->vertEntrer_Aval->setEnabled(false);
+        ui->rougeEntrer_Aval->setEnabled(false);
+        ui->vertEntrer_Amont->setEnabled(false);
+        ui->rougeEntrer_Amont->setEnabled(false);
+        ui->vertSortir_Aval->setEnabled(false);
+        ui->rougeSortir_Aval->setEnabled(false);
+        ui->vertSortir_Amont->setEnabled(false);
+        ui->rougeSortir_Amont->setEnabled(false);
 
     }
     else if (mode == MODE_MANUEL)
@@ -124,3 +162,59 @@ void Ecluse::changementEtatPorteAval(int etat) {
 void Ecluse::changementEtatPorteAmont(int etat) {
     qDebug() << "etat de la porte " << etat << endl;
 }
+
+/**
+ * @brief Met toute l'écluse en état d'urgence.
+ */
+void Ecluse::on_boutonArretUrgence_clicked() {
+    ui->statusBar->showMessage("Etat actuel: En arrêt d'urgence");
+    emit arretUrgence();
+}
+
+/**
+ * @brief Annule l'alarme.
+ */
+void Ecluse::on_voyantAlarme_clicked() {
+    emit finAlarme();
+}
+
+/**
+ * @brief Ouvre resp. ferme la vanne concernée.
+ */
+void Ecluse::on_ouvrirVanneAval_clicked() {
+    emit ouvrirVanneAval();
+}
+void Ecluse::on_ouvrirVanneAmont_clicked() {
+    emit ouvrirVanneAmont();
+}
+void Ecluse::on_fermerVanneAval_clicked(){
+    emit fermerVanneAval();
+}
+void Ecluse::on_fermerVanneAmont_clicked() {
+    emit fermerVanneAmont();
+}
+
+/**
+ * @brief Slots notifiés des changements des vannes.
+ */
+void Ecluse::changementEtatVanneAval(int etat) {
+    if (etat == ETAT_FERME) {
+        QPixmap pixmap = QPixmap (":/images/vannefermee.png");
+        ui->imageVanneAval->setPixmap(pixmap);
+    } else if (etat == ETAT_OUVERT) {
+        QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
+        ui->imageVanneAval->setPixmap(pixmap);
+    }
+    qDebug() << "etat de la vanne aval " << etat << endl;
+}
+void Ecluse::changementEtatVanneAmont(int etat) {
+    if (etat == ETAT_FERME) {
+        QPixmap pixmap = QPixmap (":/images/vannefermee.png");
+        ui->imageVanneAmont->setPixmap(pixmap);
+    } else if (etat == ETAT_OUVERT) {
+        QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
+        ui->imageVanneAmont->setPixmap(pixmap);
+    }
+    qDebug() << "etat de la vanne amont " << etat << endl;
+}
+

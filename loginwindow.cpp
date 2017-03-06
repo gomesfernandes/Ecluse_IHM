@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Gomes Fernandes Caty, Hamery Simon                                    *
+ *   L3 Informatique, S6 Printemps                                         *                                              *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
 #include <QMap>
@@ -10,6 +17,7 @@ LoginWindow::LoginWindow(QWidget *parent) :
     this->setWindowTitle("Authentification");
     m.insert("caty","password");
     m.insert("simon","12345");
+    m.insert("ihm","mdp");
 }
 
 LoginWindow::~LoginWindow()

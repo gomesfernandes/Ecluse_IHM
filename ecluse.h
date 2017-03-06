@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Gomes Fernandes Caty, Hamery Simon                                    *
+ *   L3 Informatique, S6 Printemps                                         *                                              *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef ECLUSE_H
 #define ECLUSE_H
 
@@ -25,13 +32,27 @@ public slots:
     void ouvertureFenetreEcluse(int mode);
     void changementEtatPorteAval(int etat);
     void changementEtatPorteAmont(int etat);
+    void changementEtatVanneAval(int etat);
+    void changementEtatVanneAmont(int etat);
 
 private slots:
     void on_btnEntrerAval_clicked();
+    void on_boutonArretUrgence_clicked();
+    void on_voyantAlarme_clicked();
+    void on_ouvrirVanneAval_clicked();
+    void on_ouvrirVanneAmont_clicked();
+    void on_fermerVanneAmont_clicked();
+    void on_fermerVanneAval_clicked();
 
 signals:
    void ouvrirPorteAval();
    void ouvrirPorteAmont();
+   void ouvrirVanneAval();
+   void ouvrirVanneAmont();
+   void fermerVanneAval();
+   void fermerVanneAmont();
+   void arretUrgence();
+   void finAlarme();
 
 private:
     Ui::Ecluse *ui;

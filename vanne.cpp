@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Gomes Fernandes Caty, Hamery Simon                                    *
+ *   L3 Informatique, S6 Printemps                                         *                                              *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "vanne.h"
 
 Vanne::Vanne(QObject * parent):
@@ -17,7 +24,7 @@ void Vanne::run() {
  * et sera signalé.
 */
 void Vanne::ouverture(){
-    if (etat != ETAT_FERME) {
+    if (etat != ETAT_ALARME) {
         etat = ETAT_OUVERT;
     }
     emit etatCourant(etat);
@@ -28,7 +35,7 @@ void Vanne::ouverture(){
  * et sera signalé.
 */
 void Vanne::fermeture(){
-    if (etat != ETAT_FERME) {
+    if (etat != ETAT_ALARME) {
         etat = ETAT_FERME;
     }
     emit etatCourant(etat);
