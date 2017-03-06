@@ -25,7 +25,8 @@ Ecluse::Ecluse(QWidget *parent) :
     compteurPorteAmont(9),
     anglePorteAval(0),
     anglePorteAmont(0),
-    niveau(NIVEAU_MOYEN)
+    niveau(NIVEAU_MOYEN),
+    niveau_timer(new QTimer(this))
 {
     ui->setupUi(this);
 
@@ -70,6 +71,9 @@ Ecluse::Ecluse(QWidget *parent) :
     connect(this,SIGNAL(finAlarme()),vanneAmont,SLOT(finAlarme()));
     connect(this,SIGNAL(finAlarme()),vanneAval,SLOT(finAlarme()));
 
+    niveau_timer->setSingleShot(true);
+    connect(niveau_timer,SIGNAL(timeout()),this,SLOT(niveauAtteint()));
+
     // lancement des threads
     porteAval->run();
     porteAmont->run();
@@ -78,6 +82,7 @@ Ecluse::Ecluse(QWidget *parent) :
 }
 
 Ecluse::~Ecluse() {
+    niveau_timer->stop();
     delete ui;
 }
 
@@ -180,6 +185,9 @@ void Ecluse::changementEtatPorteAval(int etat) {
         compteurPorteAval--;
         break;
     case ETAT_FERME:
+        if (sas_occupe) {
+            emit ouvrirVanneAmont();
+        }
         break;
     case ETAT_EN_FERMETURE:
         break;
@@ -246,25 +254,14 @@ void Ecluse::on_btnSortirSas_clicked()
 {
     if(sas_occupe == true)
     {
-
         if (sens == SENS_AMONT)
         {
-            qDebug() << " Sortie vers l'amont " << endl;
             ui->statusBar->showMessage("Sortie vers l'amont, fermeture des portes..");
             // FERMETURE DES PORTES
 
             emit fermerPorteAval();
-
-            emit fermerPorteAmont();
-
-            //porteAval->fermeture();
-            //porteAmont->fermeture();*
-
-            // Fermeture de la vanne opposée
-
-            //vanneAval->fermeture();
-
             emit fermerVanneAval();
+    /*
 
             //Ouverture vanne de la direction
            // vanneAmont->ouverture();
@@ -279,10 +276,10 @@ void Ecluse::on_btnSortirSas_clicked()
             //ui->vertEntrer_Amont->setDisabled(true);
             //ui->rougeSortir_Amont->setDisabled(true);
             //ui->vertEntrer_Amont->setEnabled(true);
+        */
         }
         else if (sens == SENS_AVAL)
         {
-            qDebug() << " Sortie vers l'aval " << endl;
             ui->statusBar->showMessage("Sortie vers l'aval, fermeture des portes..");
             // FERMETURE DES PORTES
             porteAval->fermeture();
@@ -341,12 +338,18 @@ void Ecluse::changementEtatVanneAval(int etat) {
     } else if (etat == ETAT_OUVERT) {
         QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
         ui->imageVanneAval->setPixmap(pixmap);
+        if (sas_occupe && sens == SENS_AMONT) {
+            niveau_timer->start(10000);
+        }
     }
 }
 void Ecluse::changementEtatVanneAmont(int etat) {
     if (etat == ETAT_FERME) {
         QPixmap pixmap = QPixmap (":/images/vannefermee.png");
         ui->imageVanneAmont->setPixmap(pixmap);
+        if (sas_occupe) {
+            niveau_timer->start(10000);
+        }
     } else if (etat == ETAT_OUVERT) {
         QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
         ui->imageVanneAmont->setPixmap(pixmap);
@@ -382,5 +385,12 @@ void Ecluse::on_arreterPorteAval_clicked() {
 }
 void Ecluse::on_arreterPorteAmont_clicked() {
     emit arreterPorteAval();
+}
 
+void Ecluse::niveauAtteint() {
+    if (sens == SENS_AMONT) {
+        emit ouvrirPorteAmont();
+    } else if (sens == SENS_AVAL) {
+        emit ouvrirPorteAval();
+    }
 }

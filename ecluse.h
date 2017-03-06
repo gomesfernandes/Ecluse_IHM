@@ -50,10 +50,9 @@ private slots:
     void on_ouvrirPorteAmont_clicked();
     void on_fermerPorteAmont_clicked();
     void on_arreterPorteAmont_clicked();
-
     void on_actionAuthentifier_triggered();
-
     void on_btnSortirSas_clicked();
+    void niveauAtteint();
 
 signals:
    void ouvrirPorteAval();
@@ -90,6 +89,7 @@ private:
     int anglePorteAval;
     int anglePorteAmont;
     int niveau;
+    QTimer * niveau_timer;
 };
 
 #endif // ECLUSE_H
