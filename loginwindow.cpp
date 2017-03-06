@@ -20,21 +20,20 @@ LoginWindow::LoginWindow(QWidget *parent) :
     m.insert("ihm","mdp");
 }
 
-LoginWindow::~LoginWindow()
-{
+LoginWindow::~LoginWindow() {
     delete ui;
 }
 
-void LoginWindow::on_NonAuthBtn_clicked()
-{
+void LoginWindow::on_NonAuthBtn_clicked() {
     emit loginAction(MODE_AUTO);
 }
 
-void LoginWindow::on_ConnextionBtn_clicked()
-{
+void LoginWindow::on_ConnextionBtn_clicked() {
     QString login = ui->loginUser->text();
     QString mdp = ui->MdpUser->text();
     if (m.contains(login))
         if (mdp == m.value(login))
                 emit loginAction(MODE_MANUEL);
+    ui->loginUser->setText("");
+    ui->MdpUser->setText("");
 }

@@ -44,11 +44,22 @@ private slots:
     void on_ouvrirVanneAmont_clicked();
     void on_fermerVanneAmont_clicked();
     void on_fermerVanneAval_clicked();
-   // void on_ouvrirPorteAval_clicked();
+    void on_ouvrirPorteAval_clicked();
+    void on_fermerPorteAval_clicked();
+    void on_arreterPorteAval_clicked();
+    void on_ouvrirPorteAmont_clicked();
+    void on_fermerPorteAmont_clicked();
+    void on_arreterPorteAmont_clicked();
+
+    void on_actionAuthentifier_triggered();
 
 signals:
    void ouvrirPorteAval();
    void ouvrirPorteAmont();
+   void fermerPorteAval();
+   void fermerPorteAmont();
+   void arreterPorteAval();
+   void arreterPorteAmont();
    void ouvrirVanneAval();
    void ouvrirVanneAmont();
    void fermerVanneAval();
@@ -57,6 +68,7 @@ signals:
    void finAlarme();
 
 private:
+    void setSignauxVisibles(bool visibilite);
     Ui::Ecluse *ui;
     LoginWindow * l;
     static int modeManuel;
