@@ -61,7 +61,7 @@ void Porte::finTransition() {
  * seconde. Ne fait rien si on est en état d'alarme.
 */
 void Porte::ouverture(){
-    if (etat != ETAT_ALARME) {
+    if ((etat != ETAT_ALARME)&& (etat != ETAT_OUVERT))  {
         etat = ETAT_EN_OUVERTURE;
         transition->start(10000);
         intervalles->start(1000);
@@ -73,7 +73,7 @@ void Porte::ouverture(){
  * @brief Idem que ouverture() pour la fermeture de la porte.
 */
 void Porte::fermeture(){
-    if (etat != ETAT_ALARME) {
+    if ((etat != ETAT_ALARME)&& (etat != ETAT_FERME)) {
         etat = ETAT_EN_FERMETURE;
         transition->start(10000);
         intervalles->start(1000);

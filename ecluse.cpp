@@ -24,7 +24,8 @@ Ecluse::Ecluse(QWidget *parent) :
     compteurPorteAval(9),
     compteurPorteAmont(9),
     anglePorteAval(0),
-    anglePorteAmont(0)
+    anglePorteAmont(0),
+    niveau(NIVEAU_MOYEN)
 {
     ui->setupUi(this);
 
@@ -220,6 +221,86 @@ void Ecluse::changementEtatPorteAmont(int etat) {
 }
 
 /**
+ * @brief Bouton sortir :
+ *
+ * Si SENS == AMONT
+ * // si la porte amont est pas ouverte, => on la ferme
+            // si porte côté aval ouverte => on la ferme
+            // si vanne côté aval ouverte => on la ferme
+            // on équilibre les niveau d'eau entre coté AMONT et écluse
+            // le niveau doit monter à HAUT
+            // puis on ouvre la porte AMONT
+            // et signal feu vert
+
+   Si sens == SENS_AVAL)
+ * // si la porte aval est pas ouverte, => on la ferme
+            // si porte côté amont ouverte => on la ferme
+            // si vanne côté amont ouverte => on la ferme
+            // on équilibre les niveau d'eau entre coté AVAL et écluse
+            // le niveau doit monter à BAS
+            // puis on ouvre la porte AVAL
+            // et on met signal feu vert
+ */
+
+void Ecluse::on_btnSortirSas_clicked()
+{
+    if(sas_occupe == true)
+    {
+
+        if (sens == SENS_AMONT)
+        {
+            qDebug() << " Sortie vers l'amont " << endl;
+            ui->statusBar->showMessage("Sortie vers l'amont, fermeture des portes..");
+            // FERMETURE DES PORTES
+
+            emit fermerPorteAval();
+
+            emit fermerPorteAmont();
+
+            //porteAval->fermeture();
+            //porteAmont->fermeture();*
+
+            // Fermeture de la vanne opposée
+
+            //vanneAval->fermeture();
+
+            emit fermerVanneAval();
+
+            //Ouverture vanne de la direction
+           // vanneAmont->ouverture();
+            niveau=NIVEAU_HAUT;
+            //Ouverture de la porte dans la direction amont
+
+            //porteAmont->ouverture();
+
+            // il faut remettre le feu d'entrée Amont à rouge
+            // et allumer celui de sortie à vert
+            //ui->rougeEntrer_Amont->setEnabled(true);
+            //ui->vertEntrer_Amont->setDisabled(true);
+            //ui->rougeSortir_Amont->setDisabled(true);
+            //ui->vertEntrer_Amont->setEnabled(true);
+        }
+        else if (sens == SENS_AVAL)
+        {
+            qDebug() << " Sortie vers l'aval " << endl;
+            ui->statusBar->showMessage("Sortie vers l'aval, fermeture des portes..");
+            // FERMETURE DES PORTES
+            porteAval->fermeture();
+            porteAmont->fermeture();
+            // Fermeture de la vanne opposée
+            vanneAmont->fermeture();
+            //Ouverture vanne de la direction
+            vanneAval->ouverture();
+            niveau=NIVEAU_BAS;
+            //Ouverture de la porte dans la direction amont
+            porteAmont->ouverture();
+        }
+        // le bateau sort, le sas est maintenant libre
+        sas_occupe = (sas_occupe) ? false : true;
+    }
+}
+
+/**
  * @brief Met toute l'écluse en état d'urgence.
  */
 void Ecluse::on_boutonArretUrgence_clicked() {
@@ -301,4 +382,5 @@ void Ecluse::on_arreterPorteAval_clicked() {
 }
 void Ecluse::on_arreterPorteAmont_clicked() {
     emit arreterPorteAval();
+
 }

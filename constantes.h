@@ -24,6 +24,10 @@ const int ETAT_NORMAL = 6;
 const int SENS_AMONT = 0;
 const int SENS_AVAL = 1;
 
+const int NIVEAU_HAUT = 1;
+const int NIVEAU_MOYEN = 0;
+const int NIVEAU_BAS = -1;
+
 const char FEU_ROUGE = 'r';
 const char FEU_VERT = 'v';
 

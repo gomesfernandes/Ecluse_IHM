@@ -53,6 +53,8 @@ private slots:
 
     void on_actionAuthentifier_triggered();
 
+    void on_btnSortirSas_clicked();
+
 signals:
    void ouvrirPorteAval();
    void ouvrirPorteAmont();
@@ -87,6 +89,7 @@ private:
     int compteurPorteAmont;
     int anglePorteAval;
     int anglePorteAmont;
+    int niveau;
 };
 
 #endif // ECLUSE_H
