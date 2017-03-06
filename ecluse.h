@@ -48,6 +48,10 @@ private:
     Vanne * vanneAmont;
     int sens;
     bool sas_occupe;
+    int compteurPorteAval;
+    int compteurPorteAmont;
+    int anglePorteAval;
+    int anglePorteAmont;
 };
 
 #endif // ECLUSE_H
