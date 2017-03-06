@@ -37,14 +37,14 @@ public slots:
 
 private slots:
     void on_btnEntrerAval_clicked();
+    void on_btnEntrerAmont_clicked();
     void on_boutonArretUrgence_clicked();
     void on_voyantAlarme_clicked();
     void on_ouvrirVanneAval_clicked();
     void on_ouvrirVanneAmont_clicked();
     void on_fermerVanneAmont_clicked();
     void on_fermerVanneAval_clicked();
-
-    void on_ouvrirPorteAval_clicked();
+   // void on_ouvrirPorteAval_clicked();
 
 signals:
    void ouvrirPorteAval();

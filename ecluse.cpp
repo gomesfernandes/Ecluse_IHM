@@ -149,7 +149,7 @@ void Ecluse::on_btnEntrerAval_clicked() {
  * @brief Même chose que pour l'aval mais en partant de l'amont
  */
 void Ecluse::on_btnEntrerAmont_clicked() {
-    sens = (ui->sensAaval->isChecked()) ? SENS_AMONT : SENS_AVAL;
+    sens = (ui->sensAval->isChecked()) ? SENS_AMONT : SENS_AVAL;
     qDebug() << "entrée en sens amont -> " << endl;
     if (sas_occupe) {
         qDebug() << "sas occupé..." << endl;
