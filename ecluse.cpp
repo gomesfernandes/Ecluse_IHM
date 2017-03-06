@@ -16,7 +16,9 @@ Ecluse::Ecluse(QWidget *parent) :
     porteAval(new Porte()),
     porteAmont(new Porte()),
     vanneAval(new Vanne()),
-    vanneAmont(new Vanne())
+    vanneAmont(new Vanne()),
+    sens(SENS_AMONT),
+    sas_occupe(false)
 {
     ui->setupUi(this);
 
@@ -26,13 +28,13 @@ Ecluse::Ecluse(QWidget *parent) :
     connect(l,SIGNAL(loginAction(int)),this,SLOT(ouvertureFenetreEcluse(int)));
 
     connect(ui->signalEntreeAmont, SIGNAL(buttonClicked(QAbstractButton*)),
-                this,SLOT(changerFeu(QAbstractButton*)));
+                signalEntreeAmont,SLOT(changerFeu(QAbstractButton*)));
     connect(ui->signalEntreeAval, SIGNAL(buttonClicked(QAbstractButton*)),
-                this,SLOT(changerFeu(QAbstractButton*)));
+                signalEntreeAval,SLOT(changerFeu(QAbstractButton*)));
     connect(ui->signalSortieAmont, SIGNAL(buttonClicked(QAbstractButton*)),
-                this,SLOT(changerFeu(QAbstractButton*)));
+                signalSortieAmont,SLOT(changerFeu(QAbstractButton*)));
     connect(ui->signalSortieAval, SIGNAL(buttonClicked(QAbstractButton*)),
-                this,SLOT(changerFeu(QAbstractButton*)));
+                signalSortieAval,SLOT(changerFeu(QAbstractButton*)));
 }
 
 Ecluse::~Ecluse()
@@ -47,21 +49,14 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
     qDebug() << "Ouverture en mode " << mode << endl;
 }
 
-
-void Ecluse::changerFeu(QAbstractButton* f){
-    QButtonGroup * sender = qobject_cast<QButtonGroup*>(this->sender());
-    QRadioButton * feu = qobject_cast<QRadioButton*>(f);
-    qDebug() << "signal envoyé par" << sender->objectName() << endl;
-    qDebug() << "feu active :" << feu->objectName() << endl;
-
-    if (sender->objectName() == "signalEntreeAmont") {
-
-    } else if (sender->objectName() == "signalSortieAmont") {
-
-    } else if (sender->objectName() == "signalEntreeAval") {
-
-    } else if (sender->objectName() == "signalSortieAval") {
-
+void Ecluse::on_btnEntrerAval_clicked()
+{
+    sens = (ui->sensAmont->isChecked()) ? SENS_AMONT : SENS_AVAL;
+    qDebug() << "entrée en sens amont -> " << endl;
+    if (sas_occupe) {
+        qDebug() << "sas occuee..." << endl;
+    } else {
+        qDebug() << "sas libre, ouverture de la porte..." << endl;
+        //emit ouvrirPorteAval();
     }
 }
-

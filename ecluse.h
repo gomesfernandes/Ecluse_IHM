@@ -5,6 +5,7 @@
 #include <QAbstractButton>
 #include "loginwindow.h"
 #include "signallumineux.h"
+#include "constantes.h"
 #include "porte.h"
 #include "vanne.h"
 
@@ -24,7 +25,7 @@ public slots:
     void ouvertureFenetreEcluse(int mode);
 
 private slots:
-    void changerFeu(QAbstractButton* f);
+    void on_btnEntrerAval_clicked();
 
 private:
     Ui::Ecluse *ui;
@@ -39,6 +40,8 @@ private:
     Porte * porteAmont;
     Vanne * vanneAval;
     Vanne * vanneAmont;
+    int sens;
+    bool sas_occupe;
 };
 
 #endif // ECLUSE_H

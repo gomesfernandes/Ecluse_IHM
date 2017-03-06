@@ -19,7 +19,7 @@ LoginWindow::~LoginWindow()
 
 void LoginWindow::on_NonAuthBtn_clicked()
 {
-    emit loginAction(1);
+    emit loginAction(MODE_AUTO);
 }
 
 void LoginWindow::on_ConnextionBtn_clicked()
@@ -28,5 +28,5 @@ void LoginWindow::on_ConnextionBtn_clicked()
     QString mdp = ui->MdpUser->text();
     if (m.contains(login))
         if (mdp == m.value(login))
-                emit loginAction(0);
+                emit loginAction(MODE_MANUEL);
 }

@@ -2,7 +2,7 @@
 #define VANNE_H
 
 #include <QThread>
-#include "etats.h"
+#include "constantes.h"
 
 class Vanne : public QThread
 {

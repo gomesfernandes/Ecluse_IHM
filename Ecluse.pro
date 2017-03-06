@@ -35,7 +35,7 @@ HEADERS  += ecluse.h \
     signallumineux.h \
     porte.h \
     vanne.h \
-    etats.h
+    constantes.h
 
 FORMS    += ecluse.ui \
     loginwindow.ui

@@ -161,97 +161,6 @@
      <pixmap resource="images.qrc">:/images/porte2.png</pixmap>
     </property>
    </widget>
-   <widget class="QLabel" name="textSortir">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>180</y>
-      <width>71</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#textSortir {
-font: bold;
-Color : WHITE;
-background-color : E8E8E8;
-}</string>
-    </property>
-    <property name="text">
-     <string> SORTIR</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="textEntrer_Amont">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>180</y>
-      <width>71</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Lucida Grande</family>
-      <pointsize>13</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#textEntrer_Amont {
-	font: bold;
-	Color : WHITE;
-	background-color :  black;
-}</string>
-    </property>
-    <property name="text">
-     <string>ENTRER</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="textEntrer_Aval">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>180</y>
-      <width>71</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#textEntrer_Aval {
-	font: bold;
-	Color : WHITE;
-	background-color : black;
-}</string>
-    </property>
-    <property name="text">
-     <string> ENTRER</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
@@ -747,7 +656,7 @@ background-color : white;
      <rect>
       <x>190</x>
       <y>160</y>
-      <width>21</width>
+      <width>22</width>
       <height>51</height>
      </rect>
     </property>
@@ -837,7 +746,7 @@ background-color : white;
      <rect>
       <x>410</x>
       <y>160</y>
-      <width>21</width>
+      <width>22</width>
       <height>51</height>
      </rect>
     </property>
@@ -882,7 +791,7 @@ background-color : white;
      <rect>
       <x>490</x>
       <y>160</y>
-      <width>21</width>
+      <width>22</width>
       <height>51</height>
      </rect>
     </property>
@@ -922,6 +831,54 @@ background-color : white;
      </item>
     </layout>
    </widget>
+   <widget class="QPushButton" name="btnEntrerAval">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>170</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Entrer</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnSortirSas">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>170</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Sortir</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnEntrerAmont">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>170</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Entrer</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -949,9 +906,9 @@ background-color : white;
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="signalEntreeAval"/>
-  <buttongroup name="signalSortieAval"/>
   <buttongroup name="signalSortieAmont"/>
   <buttongroup name="signalEntreeAmont"/>
+  <buttongroup name="signalSortieAval"/>
+  <buttongroup name="signalEntreeAval"/>
  </buttongroups>
 </ui>

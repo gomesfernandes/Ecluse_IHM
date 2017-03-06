@@ -3,7 +3,7 @@
 
 #include <QThread>
 #include <QTimer>
-#include "etats.h"
+#include "constantes.h"
 
 class Porte : public QThread
 {

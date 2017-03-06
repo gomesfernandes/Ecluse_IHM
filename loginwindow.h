@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMap>
+#include "constantes.h"
 
 namespace Ui {
 class LoginWindow;
