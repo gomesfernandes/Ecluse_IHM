@@ -28,6 +28,7 @@ public slots:
 
 private slots:
     void on_btnEntrerAval_clicked();
+    void on_btnEntrerAmont_clicked();
 
 signals:
    void ouvrirPorteAval();
