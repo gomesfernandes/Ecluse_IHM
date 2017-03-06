@@ -287,9 +287,9 @@ background-color : white;
     <property name="geometry">
      <rect>
       <x>180</x>
-      <y>40</y>
+      <y>41</y>
       <width>87</width>
-      <height>92</height>
+      <height>91</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="operationsPorteAval">
@@ -300,6 +300,11 @@ background-color : white;
          <width>16777215</width>
          <height>15</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>13</pointsize>
+        </font>
        </property>
        <property name="text">
         <string>Arrêter</string>

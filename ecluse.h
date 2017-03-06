@@ -44,6 +44,8 @@ private slots:
     void on_fermerVanneAmont_clicked();
     void on_fermerVanneAval_clicked();
 
+    void on_ouvrirPorteAval_clicked();
+
 signals:
    void ouvrirPorteAval();
    void ouvrirPorteAmont();

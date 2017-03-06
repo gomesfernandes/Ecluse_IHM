@@ -11,14 +11,14 @@
 Ecluse::Ecluse(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Ecluse),
-    signalEntreeAmont(new signalLumineux()),
-    signalSortieAmont(new signalLumineux()),
-    signalEntreeAval(new signalLumineux()),
-    signalSortieAval(new signalLumineux()),
-    porteAval(new Porte()),
-    porteAmont(new Porte()),
-    vanneAval(new Vanne()),
-    vanneAmont(new Vanne()),
+    signalEntreeAmont(new signalLumineux(this)),
+    signalSortieAmont(new signalLumineux(this)),
+    signalEntreeAval(new signalLumineux(this)),
+    signalSortieAval(new signalLumineux(this)),
+    porteAval(new Porte(this)),
+    porteAmont(new Porte(this)),
+    vanneAval(new Vanne(this)),
+    vanneAmont(new Vanne(this)),
     sens(SENS_AMONT),
     sas_occupe(false)
 {
@@ -217,4 +217,3 @@ void Ecluse::changementEtatVanneAmont(int etat) {
     }
     qDebug() << "etat de la vanne amont " << etat << endl;
 }
-

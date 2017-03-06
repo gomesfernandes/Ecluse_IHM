@@ -26,8 +26,6 @@ Porte::~Porte() {
     while (intervalles->isActive()) {
         sleep(1);
     }
-    delete transition;
-    delete intervalles;
 }
 
 /**
