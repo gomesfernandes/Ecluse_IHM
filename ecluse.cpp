@@ -1,23 +1,31 @@
+/***************************************************************************
+ *                                                                         *
+ *   Gomes Fernandes Caty, Hamery Simon                                    *
+ *   L3 Informatique, S6 Printemps                                         *                                              *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "ecluse.h"
 #include "ui_ecluse.h"
 
 Ecluse::Ecluse(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Ecluse),
-    signalEntreeAmont(new signalLumineux()),
-    signalSortieAmont(new signalLumineux()),
-    signalEntreeAval(new signalLumineux()),
-    signalSortieAval(new signalLumineux()),
-    porteAval(new Porte()),
-    porteAmont(new Porte()),
-    vanneAval(new Vanne()),
-    vanneAmont(new Vanne()),
+    signalEntreeAmont(new signalLumineux(this)),
+    signalSortieAmont(new signalLumineux(this)),
+    signalEntreeAval(new signalLumineux(this)),
+    signalSortieAval(new signalLumineux(this)),
+    porteAval(new Porte(this)),
+    porteAmont(new Porte(this)),
+    vanneAval(new Vanne(this)),
+    vanneAmont(new Vanne(this)),
     sens(SENS_AMONT),
     sas_occupe(false),
     compteurPorteAval(10),
     compteurPorteAmont(10),
     anglePorteAval(0),
-    anglePorteAmont(0)
+    anglePorteAmont(0),
+    niveau(NIVEAU_MOYEN)
 {
     ui->setupUi(this);
 
@@ -39,8 +47,28 @@ Ecluse::Ecluse(QWidget *parent) :
     // gérer les changements d'états des portes
     connect(this,SIGNAL(ouvrirPorteAval()),porteAval,SLOT(ouverture()));
     connect(this,SIGNAL(ouvrirPorteAmont()),porteAmont,SLOT(ouverture()));
+    connect(this,SIGNAL(fermerPorteAval()),porteAval,SLOT(fermeture()));
+    connect(this,SIGNAL(fermerPorteAmont()),porteAmont,SLOT(fermeture()));
     connect(porteAval,SIGNAL(etatCourant(int)),this,SLOT(changementEtatPorteAval(int)));
     connect(porteAmont,SIGNAL(etatCourant(int)),this,SLOT(changementEtatPorteAmont(int)));
+
+    // gérer la fermeture/ouverture des vannes
+    connect(this,SIGNAL(ouvrirVanneAmont()),vanneAmont,SLOT(ouverture()));
+    connect(this,SIGNAL(ouvrirVanneAval()),vanneAval,SLOT(ouverture()));
+    connect(this,SIGNAL(fermerVanneAmont()),vanneAmont,SLOT(fermeture()));
+    connect(this,SIGNAL(fermerVanneAval()),vanneAval,SLOT(fermeture()));
+    connect(vanneAval,SIGNAL(etatCourant(int)),this,SLOT(changementEtatVanneAval(int)));
+    connect(vanneAmont,SIGNAL(etatCourant(int)),this,SLOT(changementEtatVanneAmont(int)));
+
+    //urgence
+    connect(this,SIGNAL(arretUrgence()),porteAval,SLOT(urgence()));
+    connect(this,SIGNAL(arretUrgence()),porteAmont,SLOT(urgence()));
+    connect(this,SIGNAL(arretUrgence()),vanneAmont,SLOT(urgence()));
+    connect(this,SIGNAL(arretUrgence()),vanneAval,SLOT(urgence()));
+    connect(this,SIGNAL(finAlarme()),porteAval,SLOT(finAlarme()));
+    connect(this,SIGNAL(finAlarme()),porteAmont,SLOT(finAlarme()));
+    connect(this,SIGNAL(finAlarme()),vanneAmont,SLOT(finAlarme()));
+    connect(this,SIGNAL(finAlarme()),vanneAval,SLOT(finAlarme()));
 
     // lancement des threads
     porteAval->run();
@@ -67,21 +95,34 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
         for(int i=0 ; i < (ui->operationsPorteAval->count()) ; i++)
         {
             QWidget* widget1 = ui->operationsPorteAval->itemAt(i)->widget();
-            QWidget* widget2= ui->operationsPorteAmont->itemAt(i)->widget();
+            QWidget* widget2 = ui->operationsPorteAmont->itemAt(i)->widget();
             if(widget1 != NULL)
                 widget1->setVisible(false);
             if(widget2 != NULL)
                 widget2->setVisible(false);
         }
+
         for(int i=0 ; i < (ui->operationsVanneAval->count()) ; i++)
         {
-            QWidget* widget3 = ui->operationsVanneAval->itemAt(i)->widget();
-            QWidget* widget4= ui->operationsVanneAmont->itemAt(i)->widget();
+            QPushButton* widget3 = qobject_cast<QPushButton*>
+                                (ui->operationsVanneAval->itemAt(i)->widget());
+            QPushButton* widget4= qobject_cast<QPushButton*>
+                                (ui->operationsVanneAmont->itemAt(i)->widget());
             if(widget3 != NULL)
                 widget3->setVisible(false);
             if(widget4 != NULL)
                 widget4->setVisible(false);
         }
+
+        ui->voyantAlarme->setEnabled(false);
+        ui->vertEntrer_Aval->setEnabled(false);
+        ui->rougeEntrer_Aval->setEnabled(false);
+        ui->vertEntrer_Amont->setEnabled(false);
+        ui->rougeEntrer_Amont->setEnabled(false);
+        ui->vertSortir_Aval->setEnabled(false);
+        ui->rougeSortir_Aval->setEnabled(false);
+        ui->vertSortir_Amont->setEnabled(false);
+        ui->rougeSortir_Amont->setEnabled(false);
 
     }
     else if (mode == MODE_MANUEL)
@@ -162,28 +203,138 @@ void Ecluse::changementEtatPorteAmont(int etat) {
     }
 }
 
-void Ecluse::on_btnSortirSas_clicked()
-{
-    sas_occupe = (sas_occupe) ? false : true;
-    if (sens == SENS_AMONT)
-    {
-        // si la porte amont est pas ouverte, => on la ferme
+/**
+ * @brief Bouton sortir :
+ *
+ * Si SENS == AMONT
+ * // si la porte amont est pas ouverte, => on la ferme
             // si porte côté aval ouverte => on la ferme
             // si vanne côté aval ouverte => on la ferme
             // on équilibre les niveau d'eau entre coté AMONT et écluse
+            // le niveau doit monter à HAUT
             // puis on ouvre la porte AMONT
             // et signal feu vert
-        if()
 
-    }
-    else if (sens == SENS_AVAL)
-    {
-        // si la porte amont est pas ouverte, => on la ferme
+   Si sens == SENS_AVAL)
+ * // si la porte aval est pas ouverte, => on la ferme
             // si porte côté amont ouverte => on la ferme
             // si vanne côté amont ouverte => on la ferme
             // on équilibre les niveau d'eau entre coté AVAL et écluse
+            // le niveau doit monter à BAS
             // puis on ouvre la porte AVAL
             // et on met signal feu vert
+ */
 
+void Ecluse::on_btnSortirSas_clicked()
+{
+    if(sas_occupe == true)
+    {
+
+        if (sens == SENS_AMONT)
+        {
+            qDebug() << " Sortie vers l'amont " << endl;
+            ui->statusBar->showMessage("Sortie vers l'amont, fermeture des portes..");
+            // FERMETURE DES PORTES
+
+            emit fermerPorteAval();
+
+            emit fermerPorteAmont();
+
+            //porteAval->fermeture();
+            //porteAmont->fermeture();*
+
+            // Fermeture de la vanne opposée
+
+            //vanneAval->fermeture();
+
+            emit fermerVanneAval();
+
+            //Ouverture vanne de la direction
+           // vanneAmont->ouverture();
+            niveau=NIVEAU_HAUT;
+            //Ouverture de la porte dans la direction amont
+
+            //porteAmont->ouverture();
+
+            // il faut remettre le feu d'entrée Amont à rouge
+            // et allumer celui de sortie à vert
+            //ui->rougeEntrer_Amont->setEnabled(true);
+            //ui->vertEntrer_Amont->setDisabled(true);
+            //ui->rougeSortir_Amont->setDisabled(true);
+            //ui->vertEntrer_Amont->setEnabled(true);
+        }
+        else if (sens == SENS_AVAL)
+        {
+            qDebug() << " Sortie vers l'aval " << endl;
+            ui->statusBar->showMessage("Sortie vers l'aval, fermeture des portes..");
+            // FERMETURE DES PORTES
+            porteAval->fermeture();
+            porteAmont->fermeture();
+            // Fermeture de la vanne opposée
+            vanneAmont->fermeture();
+            //Ouverture vanne de la direction
+            vanneAval->ouverture();
+            niveau=NIVEAU_BAS;
+            //Ouverture de la porte dans la direction amont
+            porteAmont->ouverture();
+        }
+        // le bateau sort, le sas est maintenant libre
+        sas_occupe = (sas_occupe) ? false : true;
     }
+}
+
+/**
+ * @brief Met toute l'écluse en état d'urgence.
+ */
+void Ecluse::on_boutonArretUrgence_clicked() {
+    ui->statusBar->showMessage("Etat actuel: En arrêt d'urgence");
+    emit arretUrgence();
+}
+
+/**
+ * @brief Annule l'alarme.
+ */
+void Ecluse::on_voyantAlarme_clicked() {
+    emit finAlarme();
+}
+
+/**
+ * @brief Ouvre resp. ferme la vanne concernée.
+ */
+void Ecluse::on_ouvrirVanneAval_clicked() {
+    emit ouvrirVanneAval();
+}
+void Ecluse::on_ouvrirVanneAmont_clicked() {
+    emit ouvrirVanneAmont();
+}
+void Ecluse::on_fermerVanneAval_clicked(){
+    emit fermerVanneAval();
+}
+void Ecluse::on_fermerVanneAmont_clicked() {
+    emit fermerVanneAmont();
+}
+
+/**
+ * @brief Slots notifiés des changements des vannes.
+ */
+void Ecluse::changementEtatVanneAval(int etat) {
+    if (etat == ETAT_FERME) {
+        QPixmap pixmap = QPixmap (":/images/vannefermee.png");
+        ui->imageVanneAval->setPixmap(pixmap);
+    } else if (etat == ETAT_OUVERT) {
+        QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
+        ui->imageVanneAval->setPixmap(pixmap);
+    }
+    qDebug() << "etat de la vanne aval " << etat << endl;
+}
+void Ecluse::changementEtatVanneAmont(int etat) {
+    if (etat == ETAT_FERME) {
+        QPixmap pixmap = QPixmap (":/images/vannefermee.png");
+        ui->imageVanneAmont->setPixmap(pixmap);
+    } else if (etat == ETAT_OUVERT) {
+        QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
+        ui->imageVanneAmont->setPixmap(pixmap);
+    }
+    qDebug() << "etat de la vanne amont " << etat << endl;
+
 }

@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Gomes Fernandes Caty, Hamery Simon                                    *
+ *   L3 Informatique, S6 Printemps                                         *                                              *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "signallumineux.h"
 
 signalLumineux::signalLumineux(QObject * parent) :

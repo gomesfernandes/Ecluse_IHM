@@ -43,8 +43,3 @@ FORMS    += ecluse.ui \
 RESOURCES += \
     images.qrc
 
-DISTFILES += \
-    images/porte1.png \
-    images/porte2.png \
-    images/feu_rouge.png \
-    images/feu_vert.png

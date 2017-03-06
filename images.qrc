@@ -2,8 +2,11 @@
     <qresource prefix="/">
         <file>images/feu_rouge.png</file>
         <file>images/feu_vert.png</file>
-        <file>images/porte1.png</file>
         <file>images/porte2.png</file>
         <file>images/bordure.png</file>
+        <file>images/portefermee.png</file>
+        <file>images/porte1.png</file>
+        <file>images/vannefermee.png</file>
+        <file>images/vanneouverte.png</file>
     </qresource>
 </RCC>

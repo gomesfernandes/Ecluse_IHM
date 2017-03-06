@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Gomes Fernandes Caty, Hamery Simon                                    *
+ *   L3 Informatique, S6 Printemps                                         *                                              *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef LOGINWINDOW_H
 #define LOGINWINDOW_H
 
