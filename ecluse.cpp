@@ -21,11 +21,12 @@ Ecluse::Ecluse(QWidget *parent) :
     vanneAmont(new Vanne(this)),
     sens(SENS_AMONT),
     sas_occupe(false),
-    compteurPorteAval(10),
-    compteurPorteAmont(10),
+    compteurPorteAval(9),
+    compteurPorteAmont(9),
     anglePorteAval(0),
     anglePorteAmont(0),
-    niveau(NIVEAU_MOYEN)
+    niveau(NIVEAU_MOYEN),
+    niveau_timer(new QTimer(this))
 {
     ui->setupUi(this);
 
@@ -70,6 +71,9 @@ Ecluse::Ecluse(QWidget *parent) :
     connect(this,SIGNAL(finAlarme()),vanneAmont,SLOT(finAlarme()));
     connect(this,SIGNAL(finAlarme()),vanneAval,SLOT(finAlarme()));
 
+    niveau_timer->setSingleShot(true);
+    connect(niveau_timer,SIGNAL(timeout()),this,SLOT(niveauAtteint()));
+
     // lancement des threads
     porteAval->run();
     porteAmont->run();
@@ -78,7 +82,12 @@ Ecluse::Ecluse(QWidget *parent) :
 }
 
 Ecluse::~Ecluse() {
+    niveau_timer->stop();
     delete ui;
+}
+
+void Ecluse::on_actionAuthentifier_triggered() {
+    l->show();
 }
 
 /**
@@ -89,9 +98,7 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
     this->show();
     l->hide();
 
-    if(mode == MODE_AUTO)
-    {
-        qDebug() << "Ouverture en mode automatique"<< endl;
+    if (mode == MODE_AUTO) {
         for(int i=0 ; i < (ui->operationsPorteAval->count()) ; i++)
         {
             QWidget* widget1 = ui->operationsPorteAval->itemAt(i)->widget();
@@ -114,21 +121,27 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
                 widget4->setVisible(false);
         }
 
-        ui->voyantAlarme->setEnabled(false);
-        ui->vertEntrer_Aval->setEnabled(false);
-        ui->rougeEntrer_Aval->setEnabled(false);
-        ui->vertEntrer_Amont->setEnabled(false);
-        ui->rougeEntrer_Amont->setEnabled(false);
-        ui->vertSortir_Aval->setEnabled(false);
-        ui->rougeSortir_Aval->setEnabled(false);
-        ui->vertSortir_Amont->setEnabled(false);
-        ui->rougeSortir_Amont->setEnabled(false);
+        setSignauxVisibles(true);
 
+    } else if (mode == MODE_MANUEL) {
+        QList<QWidget *> liste = ui->centralWidget->findChildren<QWidget *>();
+        foreach (QWidget * p, liste ){
+            p->setVisible(true);
+        }
+        setSignauxVisibles(true);
     }
-    else if (mode == MODE_MANUEL)
-    {
-        qDebug() << "Ouverture en mode manuel"<< endl;
-    }
+}
+
+void Ecluse::setSignauxVisibles(bool visibilite) {
+    ui->voyantAlarme->setEnabled(visibilite);
+    ui->vertEntrer_Aval->setEnabled(visibilite);
+    ui->rougeEntrer_Aval->setEnabled(visibilite);
+    ui->vertEntrer_Amont->setEnabled(visibilite);
+    ui->rougeEntrer_Amont->setEnabled(visibilite);
+    ui->vertSortir_Aval->setEnabled(visibilite);
+    ui->rougeSortir_Aval->setEnabled(visibilite);
+    ui->vertSortir_Amont->setEnabled(visibilite);
+    ui->rougeSortir_Amont->setEnabled(visibilite);
 }
 
 /**
@@ -137,13 +150,8 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
  */
 void Ecluse::on_btnEntrerAval_clicked() {
     sens = (ui->sensAmont->isChecked()) ? SENS_AMONT : SENS_AVAL;
-    qDebug() << "entrée en sens amont -> " << endl;
-    if (sas_occupe) {
-        qDebug() << "sas occupé..." << endl;
-
-    } else {
-        qDebug() << "sas libre, ouverture de la porte..." << endl;
-        ui->statusBar->showMessage("Etat actuel: Ouverture de la porte aval");
+    if (!sas_occupe) {
+        emit fermerPorteAmont();
         emit ouvrirPorteAval();
     }
 }
@@ -153,13 +161,8 @@ void Ecluse::on_btnEntrerAval_clicked() {
  */
 void Ecluse::on_btnEntrerAmont_clicked() {
     sens = (ui->sensAval->isChecked()) ? SENS_AMONT : SENS_AVAL;
-    qDebug() << "entrée en sens amont -> " << endl;
-    if (sas_occupe) {
-        qDebug() << "sas occupé..." << endl;
-
-    } else {
-        qDebug() << "sas libre, ouverture de la porte..." << endl;
-        ui->statusBar->showMessage("Etat actuel: Ouverture de la porte aval");
+    if (!sas_occupe) {
+        emit fermerPorteAval();
         emit ouvrirPorteAmont();
     }
 }
@@ -171,17 +174,30 @@ void Ecluse::on_btnEntrerAmont_clicked() {
  * @param etat L'état actuel de la porte aval.
  */
 void Ecluse::changementEtatPorteAval(int etat) {
-    qDebug() << "etat de la porte " << etat;
-    if (etat == ETAT_EN_OUVERTURE) {
-        ui->statusBar->showMessage("Temps attente estimé 10 secondes. Temps restant : "+QString::number(compteurPorteAval));
+    QPixmap porte_haut = QPixmap (":/images/porte2.png");
+    QPixmap porte_bas = QPixmap (":/images/porte1.png");
+    switch (etat) {
+    case ETAT_EN_OUVERTURE :
+        ui->porteAval_Haut->setPixmap(porte_haut);
+        ui->porteAval_Bas->setPixmap(porte_bas);
+        ui->statusBar->showMessage("Ouverture de la porte. Temps d'attente "
+                                   "estimé :" +QString::number(compteurPorteAval));
         compteurPorteAval--;
-    }
-    if (etat == ETAT_OUVERT) {
-        compteurPorteAval=10;
+        break;
+    case ETAT_FERME:
+        if (sas_occupe) {
+            emit ouvrirVanneAmont();
+        }
+        break;
+    case ETAT_EN_FERMETURE:
+        break;
+    case ETAT_OUVERT:
+        compteurPorteAval=9;
         sas_occupe = (sas_occupe) ? false : true;
         ui->statusBar->showMessage("Etat actuel: Passage par porte aval libre");
         ui->vertEntrer_Aval->setChecked(true);
         emit ui->signalEntreeAval->buttonClicked(ui->vertEntrer_Aval);
+        break;
     }
     if (etat == ETAT_FERME){
         if(sas_occupe)
@@ -194,17 +210,26 @@ void Ecluse::changementEtatPorteAval(int etat) {
  * @brief idem que changementEtatPorteAval(int etat) pour la porte Amont
  */
 void Ecluse::changementEtatPorteAmont(int etat) {
-    qDebug() << "etat de la porte " << etat << endl;
-    if (etat == ETAT_EN_OUVERTURE) {
+    QPixmap porte_haut = QPixmap (":/images/porte2.png");
+    QPixmap porte_bas = QPixmap (":/images/porte1.png");
+    switch (etat) {
+    case ETAT_EN_OUVERTURE :
+        ui->porteAmont_Haut->setPixmap(porte_haut);
+        ui->porteAmont_Bas->setPixmap(porte_bas);
         ui->statusBar->showMessage("Temps attente estimé 10 secondes. Temps restant : "+QString::number(compteurPorteAval));
         compteurPorteAmont--;
-    }
-    if (etat == ETAT_OUVERT) {
-        compteurPorteAmont=10;
+        break;
+    case ETAT_FERME:
+        break;
+    case ETAT_EN_FERMETURE:
+        break;
+    case ETAT_OUVERT:
+        compteurPorteAmont=9;
         sas_occupe = (sas_occupe) ? false : true;
         ui->statusBar->showMessage("Etat actuel: Passage par porte amont libre");
         ui->vertEntrer_Amont->setChecked(true);
         emit ui->signalEntreeAmont->buttonClicked(ui->vertEntrer_Amont);
+        break;
     }
 }
 
@@ -234,25 +259,14 @@ void Ecluse::on_btnSortirSas_clicked()
 {
     if(sas_occupe == true)
     {
-
         if (sens == SENS_AMONT)
         {
-            qDebug() << " Sortie vers l'amont " << endl;
             ui->statusBar->showMessage("Sortie vers l'amont, fermeture des portes..");
             // FERMETURE DES PORTES
 
             emit fermerPorteAval();
-
-            emit fermerPorteAmont();
-
-            //porteAval->fermeture();
-            //porteAmont->fermeture();*
-
-            // Fermeture de la vanne opposée
-
-            //vanneAval->fermeture();
-
             emit fermerVanneAval();
+    /*
 
             //Ouverture vanne de la direction
            // vanneAmont->ouverture();
@@ -267,10 +281,10 @@ void Ecluse::on_btnSortirSas_clicked()
             //ui->vertEntrer_Amont->setDisabled(true);
             //ui->rougeSortir_Amont->setDisabled(true);
             //ui->vertEntrer_Amont->setEnabled(true);
+        */
         }
         else if (sens == SENS_AVAL)
         {
-            qDebug() << " Sortie vers l'aval " << endl;
             ui->statusBar->showMessage("Sortie vers l'aval, fermeture des portes..");
             // FERMETURE DES PORTES
             porteAval->fermeture();
@@ -329,17 +343,59 @@ void Ecluse::changementEtatVanneAval(int etat) {
     } else if (etat == ETAT_OUVERT) {
         QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
         ui->imageVanneAval->setPixmap(pixmap);
+        if (sas_occupe && sens == SENS_AMONT) {
+            niveau_timer->start(10000);
+        }
     }
-    qDebug() << "etat de la vanne aval " << etat << endl;
 }
 void Ecluse::changementEtatVanneAmont(int etat) {
     if (etat == ETAT_FERME) {
         QPixmap pixmap = QPixmap (":/images/vannefermee.png");
         ui->imageVanneAmont->setPixmap(pixmap);
+        if (sas_occupe) {
+            niveau_timer->start(10000);
+        }
     } else if (etat == ETAT_OUVERT) {
         QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
         ui->imageVanneAmont->setPixmap(pixmap);
     }
-    qDebug() << "etat de la vanne amont " << etat << endl;
+}
 
+void Ecluse::on_ouvrirPorteAval_clicked() {
+    // ????
+}
+
+void Ecluse::on_ouvrirPorteAmont_clicked() {
+    // ???
+}
+
+void Ecluse::on_fermerPorteAval_clicked() {
+    ui->rougeEntrer_Aval->setChecked(true);
+    ui->rougeSortir_Aval->setChecked(true);
+    emit ui->signalEntreeAval->buttonClicked(ui->rougeEntrer_Aval);
+    emit ui->signalSortieAval->buttonClicked(ui->rougeSortir_Aval);
+    emit fermerPorteAval();
+}
+
+void Ecluse::on_fermerPorteAmont_clicked() {
+    ui->rougeEntrer_Amont->setChecked(true);
+    ui->rougeSortir_Amont->setChecked(true);
+    emit ui->signalEntreeAmont->buttonClicked(ui->rougeEntrer_Amont);
+    emit ui->signalSortieAmont->buttonClicked(ui->rougeSortir_Amont);
+    emit fermerPorteAval();
+}
+
+void Ecluse::on_arreterPorteAval_clicked() {
+    emit arreterPorteAval();
+}
+void Ecluse::on_arreterPorteAmont_clicked() {
+    emit arreterPorteAval();
+}
+
+void Ecluse::niveauAtteint() {
+    if (sens == SENS_AMONT) {
+        emit ouvrirPorteAmont();
+    } else if (sens == SENS_AVAL) {
+        emit ouvrirPorteAval();
+    }
 }
