@@ -26,7 +26,8 @@ Ecluse::Ecluse(QWidget *parent) :
     anglePorteAval(0),
     anglePorteAmont(0),
     niveau(NIVEAU_MOYEN),
-    niveau_timer(new QTimer(this))
+    niveau_timer(new QTimer(this)),
+    mode(0)
 {
     ui->setupUi(this);
 
@@ -119,9 +120,29 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
                 widget3->setVisible(false);
             if(widget4 != NULL)
                 widget4->setVisible(false);
+
+
         }
 
         setSignauxVisibles(true);
+
+        if(ui->rougeEntrer_Amont != NULL)
+            ui->rougeEntrer_Amont->setEnabled(false);
+        if(ui->vertEntrer_Amont != NULL)
+            ui->vertEntrer_Amont->setEnabled(false);
+        if(ui->rougeSortir_Amont != NULL)
+            ui->rougeSortir_Amont->setEnabled(false);
+        if(ui->vertSortir_Amont != NULL)
+            ui->vertSortir_Amont->setEnabled(false);
+
+        if(ui->rougeEntrer_Aval != NULL)
+            ui->rougeEntrer_Aval->setEnabled(false);
+        if(ui->vertEntrer_Aval != NULL)
+            ui->vertEntrer_Aval->setEnabled(false);
+        if(ui->rougeSortir_Aval != NULL)
+            ui->rougeSortir_Aval->setEnabled(false);
+        if(ui->vertSortir_Aval != NULL)
+            ui->vertSortir_Aval->setEnabled(false);
 
     } else if (mode == MODE_MANUEL) {
         QList<QWidget *> liste = ui->centralWidget->findChildren<QWidget *>();
@@ -130,6 +151,7 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
         }
         setSignauxVisibles(true);
     }
+    this->mode = mode;
 }
 
 void Ecluse::setSignauxVisibles(bool visibilite) {
@@ -306,7 +328,20 @@ void Ecluse::on_btnSortirSas_clicked()
  * @brief Met toute l'écluse en état d'urgence.
  */
 void Ecluse::on_boutonArretUrgence_clicked() {
-    ui->statusBar->showMessage("Etat actuel: En arrêt d'urgence");
+    ui->statusBar->showMessage("Etat actuel: En arrêt d'urgence.");
+    if(this->mode==MODE_AUTO)
+    {
+        if(ui->btnEntrerAval != NULL)
+            ui->btnEntrerAval->setEnabled(false);
+        if(ui->btnEntrerAmont != NULL)
+            ui->btnEntrerAmont->setEnabled(false);
+        if(ui->btnSortirSas != NULL)
+            ui->btnSortirSas->setEnabled(false);
+        if(ui->sensAmont != NULL)
+            ui->sensAmont->setEnabled(false);
+        if(ui->sensAval != NULL)
+            ui->sensAval->setEnabled(false);
+    }
     emit arretUrgence();
 }
 

@@ -18,6 +18,7 @@ LoginWindow::LoginWindow(QWidget *parent) :
     m.insert("caty","password");
     m.insert("simon","12345");
     m.insert("ihm","mdp");
+    ui->lineEdit_3->setEnabled(false);
 }
 
 LoginWindow::~LoginWindow() {

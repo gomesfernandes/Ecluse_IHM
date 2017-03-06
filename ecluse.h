@@ -90,6 +90,7 @@ private:
     int anglePorteAmont;
     int niveau;
     QTimer * niveau_timer;
+    int mode;
 };
 
 #endif // ECLUSE_H
