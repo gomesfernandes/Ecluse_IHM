@@ -183,6 +183,11 @@ void Ecluse::changementEtatPorteAval(int etat) {
         ui->vertEntrer_Aval->setChecked(true);
         emit ui->signalEntreeAval->buttonClicked(ui->vertEntrer_Aval);
     }
+    if (etat == ETAT_FERME){
+        if(sas_occupe)
+            emit ouvrirVanneAmont();
+    }
+
 }
 
 /**
