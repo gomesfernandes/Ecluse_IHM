@@ -20,7 +20,11 @@ Ecluse::Ecluse(QWidget *parent) :
     vanneAval(new Vanne(this)),
     vanneAmont(new Vanne(this)),
     sens(SENS_AMONT),
-    sas_occupe(false)
+    sas_occupe(false),
+    compteurPorteAval(10),
+    compteurPorteAmont(10),
+    anglePorteAval(0),
+    anglePorteAmont(0)
 {
     ui->setupUi(this);
 
@@ -125,10 +129,27 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
 }
 
 /**
- * @brief Vérifie le sens et envoie un signal à la porte aval pour s'ouvrir.
+ * @brief Vérifie le sens -> Amont et envoie un signal à la porte aval pour s'ouvrir.
+ * 
  */
 void Ecluse::on_btnEntrerAval_clicked() {
     sens = (ui->sensAmont->isChecked()) ? SENS_AMONT : SENS_AVAL;
+    qDebug() << "entrée en sens amont -> " << endl;
+    if (sas_occupe) {
+        qDebug() << "sas occupé..." << endl;
+
+    } else {
+        qDebug() << "sas libre, ouverture de la porte..." << endl;
+        ui->statusBar->showMessage("Etat actuel: Ouverture de la porte aval");
+        emit ouvrirPorteAval();
+    }
+}
+
+/**
+ * @brief Même chose que pour l'aval mais en partant de l'amont
+ */
+void Ecluse::on_btnEntrerAmont_clicked() {
+    sens = (ui->sensAaval->isChecked()) ? SENS_AMONT : SENS_AVAL;
     qDebug() << "entrée en sens amont -> " << endl;
     if (sas_occupe) {
         qDebug() << "sas occupé..." << endl;
@@ -147,8 +168,13 @@ void Ecluse::on_btnEntrerAval_clicked() {
  * @param etat L'état actuel de la porte aval.
  */
 void Ecluse::changementEtatPorteAval(int etat) {
-    qDebug() << "etat de la porte " << etat << endl;
+    qDebug() << "etat de la porte " << etat;
+    if (etat == ETAT_EN_OUVERTURE) {
+        ui->statusBar->showMessage("Temps attente estimé 10 secondes. Temps restant : "+QString::number(compteurPorteAval));
+        compteurPorteAval--;
+    }
     if (etat == ETAT_OUVERT) {
+        compteurPorteAval=10;
         sas_occupe = (sas_occupe) ? false : true;
         ui->statusBar->showMessage("Etat actuel: Passage par porte aval libre");
         ui->vertEntrer_Aval->setChecked(true);
@@ -161,6 +187,17 @@ void Ecluse::changementEtatPorteAval(int etat) {
  */
 void Ecluse::changementEtatPorteAmont(int etat) {
     qDebug() << "etat de la porte " << etat << endl;
+    if (etat == ETAT_EN_OUVERTURE) {
+        ui->statusBar->showMessage("Temps attente estimé 10 secondes. Temps restant : "+QString::number(compteurPorteAval));
+        compteurPorteAmont--;
+    }
+    if (etat == ETAT_OUVERT) {
+        compteurPorteAmont=10;
+        sas_occupe = (sas_occupe) ? false : true;
+        ui->statusBar->showMessage("Etat actuel: Passage par porte amont libre");
+        ui->vertEntrer_Amont->setChecked(true);
+        emit ui->signalEntreeAmont->buttonClicked(ui->vertEntrer_Amont);
+    }
 }
 
 /**
