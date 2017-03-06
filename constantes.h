@@ -1,6 +1,8 @@
 #ifndef CONSTANTES_H
 #define CONSTANTES_H
 
+#include <QDebug>
+
 const int MODE_AUTO = 0;
 const int MODE_MANUEL = 1;
 

@@ -2,7 +2,6 @@
 #define SIGNALLUMINEUX_H
 
 #include "constantes.h"
-#include <QDebug>
 #include <QObject>
 #include <QAbstractButton>
 #include <QRadioButton>

@@ -23,9 +23,15 @@ public:
 
 public slots:
     void ouvertureFenetreEcluse(int mode);
+    void changementEtatPorteAval(int etat);
+    void changementEtatPorteAmont(int etat);
 
 private slots:
     void on_btnEntrerAval_clicked();
+
+signals:
+   void ouvrirPorteAval();
+   void ouvrirPorteAmont();
 
 private:
     Ui::Ecluse *ui;
