@@ -124,7 +124,7 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
                 widget4->setVisible(false);
         }
 
-        setSignauxVisibles(true);
+
 
         // feux non accessibles en mode automatique
         if(ui->rougeEntrer_Amont != NULL)
@@ -145,11 +145,24 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
         if(ui->vertSortir_Aval != NULL)
             ui->vertSortir_Aval->setEnabled(false);
 
+        setSignauxVisibles(true);
+
     } else if (mode == MODE_MANUEL) {
         QList<QWidget *> liste = ui->centralWidget->findChildren<QWidget *>();
         foreach (QWidget * p, liste ){
             p->setVisible(true);
         }
+
+        if(ui->btnEntrerAval != NULL)
+            ui->btnEntrerAval->setEnabled(true);
+        if(ui->btnEntrerAmont != NULL)
+            ui->btnEntrerAmont->setEnabled(true);
+        if(ui->btnSortirSas != NULL)
+            ui->btnSortirSas->setEnabled(true);
+        if(ui->sensAmont != NULL)
+            ui->sensAmont->setEnabled(true);
+        if(ui->sensAval != NULL)
+            ui->sensAval->setEnabled(true);
         setSignauxVisibles(true);
     }
     this->mode = mode;
