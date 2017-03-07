@@ -8,5 +8,6 @@
         <file>images/porte1.png</file>
         <file>images/vannefermee.png</file>
         <file>images/vanneouverte.png</file>
+        <file>images/porteouverte.png</file>
     </qresource>
 </RCC>

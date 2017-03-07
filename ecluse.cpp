@@ -102,7 +102,6 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
     l->hide();
 
     if (mode == MODE_AUTO) {
-
         // boutons portes non accessibles en mode auto
         for(int i=0 ; i < (ui->operationsPorteAval->count()) ; i++)
         {
@@ -125,9 +124,6 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
             if(widget4 != NULL)
                 widget4->setVisible(false);
         }
-
-
-
         // feux non accessibles en mode automatique
         if(ui->rougeEntrer_Amont != NULL)
             ui->rougeEntrer_Amont->setEnabled(false);
@@ -146,8 +142,8 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
             ui->rougeSortir_Aval->setEnabled(false);
         if(ui->vertSortir_Aval != NULL)
             ui->vertSortir_Aval->setEnabled(false);
-
-        setSignauxVisibles(true);
+        ui->voyantAlarme->setEnabled(false);
+        setSignauxEnabled(false);
 
     } else if (mode == MODE_MANUEL) {
         QList<QWidget *> liste = ui->centralWidget->findChildren<QWidget *>();
@@ -165,12 +161,13 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
             ui->sensAmont->setEnabled(true);
         if(ui->sensAval != NULL)
             ui->sensAval->setEnabled(true);
-        setSignauxVisibles(true);
+        setSignauxEnabled(true);
+        ui->voyantAlarme->setEnabled(true);
     }
     this->mode = mode;
 }
 
-void Ecluse::setSignauxVisibles(bool visibilite) {
+void Ecluse::setSignauxEnabled(bool visibilite) {
     ui->voyantAlarme->setEnabled(visibilite);
     ui->vertEntrer_Aval->setEnabled(visibilite);
     ui->rougeEntrer_Aval->setEnabled(visibilite);
@@ -182,16 +179,25 @@ void Ecluse::setSignauxVisibles(bool visibilite) {
     ui->rougeSortir_Amont->setEnabled(visibilite);
 }
 
+
 /**
  * @brief Vérifie le sens -> Amont et envoie un signal à la porte aval pour s'ouvrir.
  * 
  */
 void Ecluse::on_btnEntrerAval_clicked() {
     sens = (ui->sensAmont->isChecked()) ? SENS_AMONT : SENS_AVAL;
+    if (sens == SENS_AVAL) return;
     if (!sas_occupe) {
-        emit fermerVanneAmont();
-        emit fermerPorteAmont();
-        emit ouvrirPorteAval();
+        if( niveau == NIVEAU_BAS ) {
+            emit ouvrirPorteAval();
+        } else if (niveau == NIVEAU_MOYEN) {
+            //2 portes fermées et vannes ouvertes -> remplir le sas
+            emit fermerVanneAmont();
+            emit ouvrirVanneAval();
+        } else {
+            //autre porte ouverte
+            emit fermerPorteAmont();
+        }
     }
 }
 
@@ -199,11 +205,19 @@ void Ecluse::on_btnEntrerAval_clicked() {
  * @brief Même chose que pour l'aval mais en partant de l'amont
  */
 void Ecluse::on_btnEntrerAmont_clicked() {
-    sens = (ui->sensAval->isChecked()) ? SENS_AMONT : SENS_AVAL;
+    sens = (ui->sensAmont->isChecked()) ? SENS_AMONT : SENS_AVAL;
+    if (sens == SENS_AMONT) return;
     if (!sas_occupe) {
-        emit fermerVanneAval();
-        emit fermerPorteAval();
-        emit ouvrirPorteAmont();
+        if( niveau == NIVEAU_HAUT) {
+            emit ouvrirPorteAmont();
+        } else if (niveau == NIVEAU_MOYEN) {
+            //2 portes fermées et vannes ouvertes -> remplir le sas
+            emit fermerVanneAval();
+            emit ouvrirVanneAmont();
+        } else {
+            //autre porte ouverte
+            emit fermerPorteAval();
+        }
     }
 }
 
@@ -216,38 +230,45 @@ void Ecluse::on_btnEntrerAmont_clicked() {
 void Ecluse::changementEtatPorteAval(int etat) {
     QPixmap porte_haut = QPixmap (":/images/porte2.png");
     QPixmap porte_bas = QPixmap (":/images/porte1.png");
-    QPixmap porte_fermee = QPixmap (":/images/portefermee.png");
+    QPixmap porteouverte = QPixmap (":/images/porteouverte.png");
     switch (etat) {
     case ETAT_EN_OUVERTURE :
-        ui->porteAval_Haut->setPixmap(porte_haut);
-        ui->porteAval_Bas->setPixmap(porte_bas);
-        ui->statusBar->showMessage("Ouverture de la porte. Temps d'attente "
+        ui->statusBar->showMessage("Ouverture de la porte aval. Temps d'attente "
                                    "estimé :" +QString::number(compteurPorteAval));
         compteurPorteAval--;
         break;
     case ETAT_FERME:
+        ui->porteAval_Haut->setPixmap(porte_haut);
+        ui->porteAval_Bas->setPixmap(porte_bas);
         compteurPorteAval = 9;
-        ui->porteAval_Haut->setPixmap(porte_fermee);
-        ui->porteAval_Bas->setPixmap(porte_fermee);
         if (sas_occupe) {
             emit ouvrirVanneAmont();
-            qDebug() << " ouvrir vanne amont.." << endl;
         }
         break;
     case ETAT_EN_FERMETURE:
+        ui->statusBar->showMessage("Fermeture de la porte aval. Temps d'attente "
+                                   "estimé :" +QString::number(compteurPorteAval));
+        compteurPorteAval--;
         break;
     case ETAT_OUVERT:
+        ui->porteAval_Haut->setPixmap(porteouverte);
+        ui->porteAval_Bas->setPixmap(porteouverte);
+        if (sas_occupe) {
+            ui->rougeEntrer_Aval->setChecked(true);
+            ui->vertSortir_Aval->setChecked(true);
+            emit ui->signalEntreeAval->buttonClicked(ui->rougeEntrer_Aval);
+            emit ui->signalSortieAval->buttonClicked(ui->vertSortir_Aval);
+            sas_occupe = false;
+        } else {
+            ui->vertEntrer_Aval->setChecked(true);
+            ui->rougeSortir_Aval->setChecked(true);
+            emit ui->signalEntreeAval->buttonClicked(ui->vertEntrer_Aval);
+            emit ui->signalSortieAval->buttonClicked(ui->rougeSortir_Aval);
+            sas_occupe = true;
+        }
         compteurPorteAval = 9;
-        sas_occupe = (sas_occupe) ? false : true;
         ui->statusBar->showMessage("Etat actuel: Passage par porte aval libre");
-        ui->vertEntrer_Aval->setChecked(true);
-        emit ui->signalEntreeAval->buttonClicked(ui->vertEntrer_Aval);
-        ui->eauSas->setStyleSheet("#eauSas {background-color : #F0F8FF;}");
         break;
-    }
-    if (etat == ETAT_FERME){
-        if(sas_occupe)
-            emit ouvrirVanneAmont();
     }
 }
 
@@ -257,24 +278,30 @@ void Ecluse::changementEtatPorteAval(int etat) {
 void Ecluse::changementEtatPorteAmont(int etat) {
     QPixmap porte_haut = QPixmap (":/images/porte2.png");
     QPixmap porte_bas = QPixmap (":/images/porte1.png");
-    QPixmap porte_fermee = QPixmap (":/images/portefermee.png");
+    QPixmap porteouverte = QPixmap (":/images/porteouverte.png");
     switch (etat) {
     case ETAT_EN_OUVERTURE :
-        ui->porteAmont_Haut->setPixmap(porte_haut);
-        ui->porteAmont_Bas->setPixmap(porte_bas);
-        ui->statusBar->showMessage("Temps attente estimé 10 secondes. "
-                        " Temps restant : "+QString::number(compteurPorteAmont));
+        ui->statusBar->showMessage("Ouverture de la porte amont. Temps d'attente "
+                        "estimé : "+QString::number(compteurPorteAmont));
         compteurPorteAmont--;
         break;
     case ETAT_FERME:
+        ui->porteAmont_Haut->setPixmap(porte_haut);
+        ui->porteAmont_Bas->setPixmap(porte_bas);
+        if (sas_occupe) {
+            emit ouvrirVanneAval();
+        }
         compteurPorteAmont=9;
-        ui->porteAmont_Haut->setPixmap(porte_fermee);
         // set couleur bleu clair
-        ui->porteAmont_Bas->setPixmap(porte_fermee);
         break;
     case ETAT_EN_FERMETURE:
+        ui->statusBar->showMessage("Fermeture de la porte amont. Temps d'attente "
+                        "estimé : "+QString::number(compteurPorteAmont));
+        compteurPorteAmont--;
         break;
     case ETAT_OUVERT:
+        ui->porteAmont_Haut->setPixmap(porteouverte);
+        ui->porteAmont_Bas->setPixmap(porteouverte);
         if (sas_occupe) {
             ui->rougeEntrer_Amont->setChecked(true);
             ui->vertSortir_Amont->setChecked(true);
@@ -282,13 +309,12 @@ void Ecluse::changementEtatPorteAmont(int etat) {
             emit ui->signalSortieAmont->buttonClicked(ui->vertSortir_Amont);
         } else {
             ui->vertEntrer_Amont->setChecked(true);
-            ui->rougeSortir_Amont->setChecked(false);
+            ui->rougeSortir_Amont->setChecked(true);
             emit ui->signalEntreeAmont->buttonClicked(ui->vertEntrer_Amont);
             emit ui->signalSortieAmont->buttonClicked(ui->rougeSortir_Amont);
         }
         compteurPorteAmont=9;
         sas_occupe = (sas_occupe) ? false : true;
-        ui->eauSas->setStyleSheet("#eauSas {background-color : #00008B;}");
         ui->statusBar->showMessage("Etat actuel: Passage par porte amont libre");
         break;
     }
@@ -318,31 +344,22 @@ void Ecluse::changementEtatPorteAmont(int etat) {
 
 void Ecluse::on_btnSortirSas_clicked()
 {
-    if(sas_occupe == true)
-    {
-    qDebug() << "on va sortir" << endl;
+    if(sas_occupe == true) {
         if (sens == SENS_AMONT)
         {
-             qDebug() << "dans le sens amont" << endl;
+            ui->rougeEntrer_Aval->setChecked(true);
+            emit ui->signalEntreeAval->buttonClicked(ui->rougeEntrer_Aval);
             ui->statusBar->showMessage("Sortie vers l'amont, fermeture des portes..");
-            // FERMETURE DES PORTES
-
+            // FERMETURE DE LA PORTE
             emit fermerPorteAval();
-            emit fermerVanneAval();
         }
         else if (sens == SENS_AVAL)
         {
+            ui->rougeEntrer_Amont->setChecked(true);
+            emit ui->signalEntreeAmont->buttonClicked(ui->rougeEntrer_Amont);
             ui->statusBar->showMessage("Sortie vers l'aval, fermeture des portes..");
-            // FERMETURE DES PORTES
-            porteAval->fermeture();
-            porteAmont->fermeture();
-            // Fermeture de la vanne opposée
-            vanneAmont->fermeture();
-            //Ouverture vanne de la direction
-            vanneAval->ouverture();
-            niveau=NIVEAU_BAS;
-            //Ouverture de la porte dans la direction amont
-            porteAmont->ouverture();
+            // FERMETURE DE LA PORTE
+            emit fermerPorteAmont();
         }
     }
 }
@@ -351,7 +368,12 @@ void Ecluse::on_btnSortirSas_clicked()
  * @brief Met toute l'écluse en état d'urgence.
  */
 void Ecluse::on_boutonArretUrgence_clicked() {
-    ui->statusBar->showMessage("Etat actuel : En arrêt d'urgence.");
+    QPixmap pixmap_ferme = QPixmap (":/images/vannefermee.png");
+    ui->imageVanneAmont->setPixmap(pixmap_ferme);
+    ui->imageVanneAval->setPixmap(pixmap_ferme);
+    ui->voyantAlarme->setChecked(true);
+    ui->statusBar->setStyleSheet("#statusBar{color:red;}");
+    ui->statusBar->showMessage("ECLUSE EN ARRÊT D'URGENCE, UN OPERATEUR VA INTERVENIR");
     if(this->mode==MODE_AUTO)
     {
         if(ui->btnEntrerAval != NULL)
@@ -372,6 +394,9 @@ void Ecluse::on_boutonArretUrgence_clicked() {
  * @brief Annule l'alarme.
  */
 void Ecluse::on_voyantAlarme_clicked() {
+    ui->voyantAlarme->setChecked(false);
+    ui->statusBar->setStyleSheet("#statusBar{color:black;}");
+    ui->statusBar->showMessage("État actuel: normal");
     emit finAlarme();
 }
 
@@ -395,37 +420,76 @@ void Ecluse::on_fermerVanneAmont_clicked() {
  * @brief Slots notifiés des changements des vannes.
  */
 void Ecluse::changementEtatVanneAval(int etat) {
+    int attente = 0;
+    QPixmap pixmap_ferme = QPixmap (":/images/vannefermee.png");
+    QPixmap pixmap_ouvert = QPixmap (":/images/vanneouverte.png");
     if (etat == ETAT_FERME) {
-        QPixmap pixmap = QPixmap (":/images/vannefermee.png");
-        ui->imageVanneAval->setPixmap(pixmap);
+        ui->imageVanneAval->setPixmap(pixmap_ferme);
     } else if (etat == ETAT_OUVERT) {
-        QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
-        ui->imageVanneAval->setPixmap(pixmap);
-        if (sas_occupe && sens == SENS_AMONT) {
-            niveau_timer->start(10000);
+        ui->imageVanneAval->setPixmap(pixmap_ouvert);
+        if (sas_occupe && sens == SENS_AVAL) {
+            if (niveau == NIVEAU_MOYEN) {
+                attente = 5000;
+            } else if (niveau == NIVEAU_HAUT){
+                attente = 10000;
+            }
+            niveau = NIVEAU_BAS; //niveau de l'eau à la fin
+            ui->statusBar->showMessage("Etat actuel : diminution du niveau d'eau du sas");
+            niveau_timer->start(attente);
+        } else if (!sas_occupe && sens == SENS_AMONT) {
+            if (niveau == NIVEAU_MOYEN) {
+                attente = 5000;
+            } else if (niveau == NIVEAU_HAUT) {
+                attente = 10000;
+            }
+            niveau = NIVEAU_BAS;
+            ui->statusBar->showMessage("Etat actuel : diminution du niveau d'eau du sas");
+            niveau_timer->start(attente);
         }
+    } else if (etat == ETAT_ALARME) {
+        ui->imageVanneAmont->setPixmap(pixmap_ferme);
     }
 }
 void Ecluse::changementEtatVanneAmont(int etat) {
+    int attente = 0;
+    QPixmap pixmap_ferme = QPixmap (":/images/vannefermee.png");
+    QPixmap pixmap_ouvert = QPixmap (":/images/vanneouverte.png");
     if (etat == ETAT_FERME) {
-        QPixmap pixmap = QPixmap (":/images/vannefermee.png");
-        ui->imageVanneAmont->setPixmap(pixmap);
+        ui->imageVanneAmont->setPixmap(pixmap_ferme);
     } else if (etat == ETAT_OUVERT) {
-        QPixmap pixmap = QPixmap (":/images/vanneouverte.png");
-        ui->imageVanneAmont->setPixmap(pixmap);
-        if (sas_occupe) {
-            niveau_timer->start(10000);
-            qDebug() << " attendre mise à niveau de l'eau.." << endl;
+        ui->imageVanneAmont->setPixmap(pixmap_ouvert);
+        if (sas_occupe && sens == SENS_AMONT) {
+            if (niveau == NIVEAU_MOYEN) {
+                attente = 5000;
+            } else if (niveau == NIVEAU_BAS) {
+                attente = 10000;
+            }
+            niveau = NIVEAU_HAUT; //niveau de l'eau à la fin
+            ui->statusBar->showMessage("Etat actuel : élevation du niveau d'eau du sas");
+            niveau_timer->start(attente);
+        } else if (!sas_occupe && sens == SENS_AVAL) {
+            if (niveau == NIVEAU_MOYEN) {
+                attente = 5000;
+            } else if (niveau == NIVEAU_BAS) {
+                attente = 10000;
+            }
+            niveau = NIVEAU_HAUT;
+            ui->statusBar->showMessage("Etat actuel : élevation du niveau d'eau du sas");
+            niveau_timer->start(attente);
         }
+    } else if (etat == ETAT_ALARME) {
+        ui->imageVanneAmont->setPixmap(pixmap_ferme);
     }
 }
 
 void Ecluse::on_ouvrirPorteAval_clicked() {
-    // ????
+    if (niveau != NIVEAU_BAS) return;
+    emit ouvrirPorteAval();
 }
 
 void Ecluse::on_ouvrirPorteAmont_clicked() {
-   // ????
+    if (niveau != NIVEAU_HAUT) return;
+    emit ouvrirPorteAmont();
 }
 
 void Ecluse::on_fermerPorteAval_clicked() {
@@ -435,7 +499,6 @@ void Ecluse::on_fermerPorteAval_clicked() {
     emit ui->signalSortieAval->buttonClicked(ui->rougeSortir_Aval);
     emit fermerPorteAval();
 }
-
 void Ecluse::on_fermerPorteAmont_clicked() {
     ui->rougeEntrer_Amont->setChecked(true);
     ui->rougeSortir_Amont->setChecked(true);
@@ -443,7 +506,6 @@ void Ecluse::on_fermerPorteAmont_clicked() {
     emit ui->signalSortieAmont->buttonClicked(ui->rougeSortir_Amont);
     emit fermerPorteAval();
 }
-
 void Ecluse::on_arreterPorteAval_clicked() {
     emit arreterPorteAval();
 }
@@ -452,10 +514,25 @@ void Ecluse::on_arreterPorteAmont_clicked() {
 }
 
 void Ecluse::niveauAtteint() {
-    if (sens == SENS_AMONT) {
-        emit ouvrirPorteAmont();
-    } else if (sens == SENS_AVAL) {
-        emit ouvrirPorteAval();
+    if (niveau == NIVEAU_BAS) {
+        ui->eauSas->setStyleSheet("#eauSas {background-color : #c5e1f9;}");
+    } else if (niveau == NIVEAU_HAUT) {
+        ui->eauSas->setStyleSheet("#eauSas {background-color : #2e97f7;}");
+    } else {
+        ui->eauSas->setStyleSheet("#eauSas {background-color : #93ccff;}");
+    }
+    if (sas_occupe) {
+        if (sens == SENS_AMONT && niveau == NIVEAU_HAUT) {
+            emit ouvrirPorteAmont();
+        } else if (sens == SENS_AVAL && niveau == NIVEAU_BAS) {
+            emit ouvrirPorteAval();
+        }
+    } else {
+        if (sens == SENS_AMONT && niveau == NIVEAU_BAS) {
+            emit ouvrirPorteAval();
+        } else if (sens == SENS_AVAL && niveau == NIVEAU_HAUT) {
+            emit ouvrirPorteAmont();
+        }
     }
 }
 

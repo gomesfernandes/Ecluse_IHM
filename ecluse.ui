@@ -14,57 +14,6 @@
    <string>Ecluse</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="textAval">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>100</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#textAval {font: bold;}</string>
-    </property>
-    <property name="text">
-     <string>AVAL</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="textAmont">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>100</y>
-      <width>111</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#textAmont {font: bold; }</string>
-    </property>
-    <property name="text">
-     <string>AMONT</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="bordureHaut">
     <property name="geometry">
      <rect>
@@ -110,7 +59,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="images.qrc">:/images/portefermee.png</pixmap>
+     <pixmap resource="images.qrc">:/images/porte2.png</pixmap>
     </property>
    </widget>
    <widget class="QLabel" name="porteAval_Bas">
@@ -126,7 +75,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="images.qrc">:/images/portefermee.png</pixmap>
+     <pixmap resource="images.qrc">:/images/porte1.png</pixmap>
     </property>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget">
@@ -846,7 +795,7 @@ background-color : white;
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="images.qrc">:/images/portefermee.png</pixmap>
+     <pixmap resource="images.qrc">:/images/porte2.png</pixmap>
     </property>
    </widget>
    <widget class="QLabel" name="porteAmont_Bas">
@@ -862,7 +811,7 @@ background-color : white;
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="images.qrc">:/images/portefermee.png</pixmap>
+     <pixmap resource="images.qrc">:/images/porte1.png</pixmap>
     </property>
    </widget>
    <widget class="QLabel" name="eauAval">
@@ -880,7 +829,7 @@ background-color : white;
 }</string>
     </property>
     <property name="text">
-     <string> </string>
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="eauSas">
@@ -888,14 +837,12 @@ background-color : white;
      <rect>
       <x>220</x>
       <y>140</y>
-      <width>251</width>
-      <height>81</height>
+      <width>281</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">#eauSas { 
-	background-color : #6495ED;
-}</string>
+     <string notr="true">#eauSas {background-color : #c6e4ff;}</string>
     </property>
     <property name="text">
      <string/>
@@ -904,9 +851,9 @@ background-color : white;
    <widget class="QLabel" name="eauAmont">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>500</x>
       <y>140</y>
-      <width>251</width>
+      <width>221</width>
       <height>91</height>
      </rect>
     </property>
@@ -919,11 +866,61 @@ background-color : white;
      <string/>
     </property>
    </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>631</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="textAval">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#textAval {font: bold;}</string>
+       </property>
+       <property name="text">
+        <string>AVAL</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="textAmont">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#textAmont {font: bold; }</string>
+       </property>
+       <property name="text">
+        <string>AMONT</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <zorder>horizontalLayoutWidget</zorder>
    <zorder>eauAmont</zorder>
-   <zorder>eauSas</zorder>
    <zorder>eauAval</zorder>
-   <zorder>textAval</zorder>
-   <zorder>textAmont</zorder>
+   <zorder>eauSas</zorder>
    <zorder>bordureHaut</zorder>
    <zorder>bordureBas</zorder>
    <zorder>porteAval_Haut</zorder>
@@ -949,7 +946,6 @@ background-color : white;
    <zorder>btnEntrerAmont</zorder>
    <zorder>porteAmont_Haut</zorder>
    <zorder>porteAmont_Bas</zorder>
-   <zorder>textPorteAval</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -989,9 +985,9 @@ background-color : white;
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="signalEntreeAmont"/>
   <buttongroup name="signalSortieAval"/>
   <buttongroup name="signalEntreeAval"/>
   <buttongroup name="signalSortieAmont"/>
+  <buttongroup name="signalEntreeAmont"/>
  </buttongroups>
 </ui>

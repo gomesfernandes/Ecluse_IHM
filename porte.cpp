@@ -9,6 +9,7 @@
 
 Porte::Porte(QObject * parent):
     QThread(parent),
+    etat(ETAT_FERME),
     transition(new QTimer(this)),
     intervalles(new QTimer(this))
 {
@@ -66,7 +67,8 @@ void Porte::ouverture(){
         transition->start(10000);
         intervalles->start(1000);
         qDebug() << "ouverture de la porte" << endl;
-    }
+    } else if (etat == ETAT_OUVERT)
+        emit etatCourant(etat);
 }
 
 /**
@@ -78,7 +80,8 @@ void Porte::fermeture(){
         transition->start(10000);
         intervalles->start(1000);
         qDebug() << " fermeture de la porte" << endl;
-    }
+    } else if (etat == ETAT_FERME)
+        emit etatCourant(etat);
 }
 
 /**
