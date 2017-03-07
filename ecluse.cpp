@@ -100,6 +100,8 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
     l->hide();
 
     if (mode == MODE_AUTO) {
+
+        // boutons portes non accessibles en mode auto
         for(int i=0 ; i < (ui->operationsPorteAval->count()) ; i++)
         {
             QWidget* widget1 = ui->operationsPorteAval->itemAt(i)->widget();
@@ -109,7 +111,7 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
             if(widget2 != NULL)
                 widget2->setVisible(false);
         }
-
+        //boutons vannes non accessible en mode auto
         for(int i=0 ; i < (ui->operationsVanneAval->count()) ; i++)
         {
             QPushButton* widget3 = qobject_cast<QPushButton*>
@@ -120,12 +122,11 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
                 widget3->setVisible(false);
             if(widget4 != NULL)
                 widget4->setVisible(false);
-
-
         }
 
         setSignauxVisibles(true);
 
+        // feux non accessibles en mode automatique
         if(ui->rougeEntrer_Amont != NULL)
             ui->rougeEntrer_Amont->setEnabled(false);
         if(ui->vertEntrer_Amont != NULL)
