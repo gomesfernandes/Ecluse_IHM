@@ -8,6 +8,8 @@
 #include "ecluse.h"
 #include "ui_ecluse.h"
 
+
+
 Ecluse::Ecluse(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Ecluse),
@@ -23,8 +25,8 @@ Ecluse::Ecluse(QWidget *parent) :
     sas_occupe(false),
     compteurPorteAval(9),
     compteurPorteAmont(9),
-    anglePorteAval(0),
-    anglePorteAmont(0),
+    anglePorteAval(45),
+    anglePorteAmont(45),
     niveau(NIVEAU_MOYEN),
     niveau_timer(new QTimer(this)),
     mode(0)
@@ -199,6 +201,7 @@ void Ecluse::on_btnEntrerAval_clicked() {
 void Ecluse::on_btnEntrerAmont_clicked() {
     sens = (ui->sensAval->isChecked()) ? SENS_AMONT : SENS_AVAL;
     if (!sas_occupe) {
+        emit fermerVanneAval();
         emit fermerPorteAval();
         emit ouvrirPorteAmont();
     }
@@ -239,13 +242,13 @@ void Ecluse::changementEtatPorteAval(int etat) {
         ui->statusBar->showMessage("Etat actuel: Passage par porte aval libre");
         ui->vertEntrer_Aval->setChecked(true);
         emit ui->signalEntreeAval->buttonClicked(ui->vertEntrer_Aval);
+        ui->eauSas->setStyleSheet("#eauSas {background-color : #F0F8FF;}");
         break;
     }
     if (etat == ETAT_FERME){
         if(sas_occupe)
             emit ouvrirVanneAmont();
     }
-
 }
 
 /**
@@ -266,6 +269,7 @@ void Ecluse::changementEtatPorteAmont(int etat) {
     case ETAT_FERME:
         compteurPorteAmont=9;
         ui->porteAmont_Haut->setPixmap(porte_fermee);
+        // set couleur bleu clair
         ui->porteAmont_Bas->setPixmap(porte_fermee);
         break;
     case ETAT_EN_FERMETURE:
@@ -284,6 +288,7 @@ void Ecluse::changementEtatPorteAmont(int etat) {
         }
         compteurPorteAmont=9;
         sas_occupe = (sas_occupe) ? false : true;
+        ui->eauSas->setStyleSheet("#eauSas {background-color : #00008B;}");
         ui->statusBar->showMessage("Etat actuel: Passage par porte amont libre");
         break;
     }
@@ -346,7 +351,7 @@ void Ecluse::on_btnSortirSas_clicked()
  * @brief Met toute l'écluse en état d'urgence.
  */
 void Ecluse::on_boutonArretUrgence_clicked() {
-    ui->statusBar->showMessage("Etat actuel: En arrêt d'urgence.");
+    ui->statusBar->showMessage("Etat actuel : En arrêt d'urgence.");
     if(this->mode==MODE_AUTO)
     {
         if(ui->btnEntrerAval != NULL)
@@ -410,7 +415,7 @@ void Ecluse::changementEtatVanneAmont(int etat) {
         ui->imageVanneAmont->setPixmap(pixmap);
         if (sas_occupe) {
             niveau_timer->start(10000);
-            qDebug() << " attendre niveau.." << endl;
+            qDebug() << " attendre mise à niveau de l'eau.." << endl;
         }
     }
 }
@@ -420,7 +425,7 @@ void Ecluse::on_ouvrirPorteAval_clicked() {
 }
 
 void Ecluse::on_ouvrirPorteAmont_clicked() {
-    // ???
+   // ????
 }
 
 void Ecluse::on_fermerPorteAval_clicked() {
@@ -453,3 +458,4 @@ void Ecluse::niveauAtteint() {
         emit ouvrirPorteAval();
     }
 }
+
