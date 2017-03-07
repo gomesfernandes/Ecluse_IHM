@@ -238,7 +238,7 @@ background-color : white;
       <x>180</x>
       <y>41</y>
       <width>87</width>
-      <height>91</height>
+      <height>92</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="operationsPorteAval">
@@ -438,10 +438,10 @@ background-color : white;
    <widget class="Line" name="line_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>220</y>
-      <width>661</width>
-      <height>16</height>
+      <width>691</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="orientation">
@@ -451,10 +451,10 @@ background-color : white;
    <widget class="Line" name="line_3">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>130</y>
-      <width>671</width>
-      <height>21</height>
+      <x>0</x>
+      <y>120</y>
+      <width>681</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="orientation">
@@ -559,7 +559,7 @@ background-color : white;
      <rect>
       <x>150</x>
       <y>160</y>
-      <width>22</width>
+      <width>26</width>
       <height>51</height>
      </rect>
     </property>
@@ -604,7 +604,7 @@ background-color : white;
      <rect>
       <x>270</x>
       <y>160</y>
-      <width>22</width>
+      <width>26</width>
       <height>51</height>
      </rect>
     </property>
@@ -649,7 +649,7 @@ background-color : white;
      <rect>
       <x>420</x>
       <y>160</y>
-      <width>22</width>
+      <width>26</width>
       <height>51</height>
      </rect>
     </property>
@@ -694,7 +694,7 @@ background-color : white;
      <rect>
       <x>520</x>
       <y>160</y>
-      <width>22</width>
+      <width>26</width>
       <height>51</height>
      </rect>
     </property>
@@ -814,73 +814,112 @@ background-color : white;
      <pixmap resource="images.qrc">:/images/porte1.png</pixmap>
     </property>
    </widget>
+   <widget class="QLabel" name="eauAval">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>140</y>
+      <width>221</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#eauAval { 
+	background-color : #F0F8FF;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <widget class="QLabel" name="eauSas">
     <property name="geometry">
      <rect>
       <x>220</x>
       <y>140</y>
       <width>281</width>
-      <height>81</height>
+      <height>91</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">#eauSas {background-color : #93ccff;}</string>
+     <string notr="true">#eauSas {background-color : #c6e4ff;}</string>
     </property>
     <property name="text">
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="textAmont">
+   <widget class="QLabel" name="eauAmont">
     <property name="geometry">
      <rect>
-      <x>580</x>
-      <y>110</y>
-      <width>91</width>
-      <height>31</height>
+      <x>500</x>
+      <y>140</y>
+      <width>221</width>
+      <height>91</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
     <property name="styleSheet">
-     <string notr="true">#textAmont {font: bold; }</string>
+     <string notr="true">#eauAmont { 
+	background-color : #00008B;
+}</string>
     </property>
     <property name="text">
-     <string>AMONT</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="textAval">
+   <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>110</y>
-      <width>61</width>
-      <height>31</height>
+      <x>30</x>
+      <y>100</y>
+      <width>631</width>
+      <height>41</height>
      </rect>
     </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#textAval {font: bold;}</string>
-    </property>
-    <property name="text">
-     <string>AVAL</string>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="textAval">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#textAval {font: bold;}</string>
+       </property>
+       <property name="text">
+        <string>AVAL</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="textAmont">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#textAmont {font: bold; }</string>
+       </property>
+       <property name="text">
+        <string>AMONT</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
+   <zorder>horizontalLayoutWidget</zorder>
+   <zorder>eauAmont</zorder>
+   <zorder>eauAval</zorder>
    <zorder>eauSas</zorder>
    <zorder>bordureHaut</zorder>
    <zorder>bordureBas</zorder>
@@ -907,9 +946,6 @@ background-color : white;
    <zorder>btnEntrerAmont</zorder>
    <zorder>porteAmont_Haut</zorder>
    <zorder>porteAmont_Bas</zorder>
-   <zorder>textAval</zorder>
-   <zorder>textAmont</zorder>
-   <zorder>textAval</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -917,7 +953,7 @@ background-color : white;
      <x>0</x>
      <y>0</y>
      <width>683</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuEcluse">
@@ -949,9 +985,9 @@ background-color : white;
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="signalSortieAmont"/>
-  <buttongroup name="signalEntreeAmont"/>
   <buttongroup name="signalSortieAval"/>
   <buttongroup name="signalEntreeAval"/>
+  <buttongroup name="signalSortieAmont"/>
+  <buttongroup name="signalEntreeAmont"/>
  </buttongroups>
 </ui>
