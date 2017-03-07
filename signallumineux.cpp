@@ -19,5 +19,4 @@ char signalLumineux::getCouleur() { return couleur; }
 void signalLumineux::changerFeu(QAbstractButton* f){
     QRadioButton * feu = qobject_cast<QRadioButton*>(f);
     couleur = (feu->objectName().left(1) == "r") ? FEU_ROUGE : FEU_VERT;
-    qDebug() << "feu active :" << couleur << endl;
 }
