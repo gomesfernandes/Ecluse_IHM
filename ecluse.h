@@ -69,7 +69,7 @@ signals:
    void finAlarme();
 
 private:
-    void setSignauxVisibles(bool visibilite);
+    void setSignauxEnabled(bool visibilite);
     Ui::Ecluse *ui;
     LoginWindow * l;
     static int modeManuel;

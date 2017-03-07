@@ -14,57 +14,6 @@
    <string>Ecluse</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="textAval">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>100</y>
-      <width>81</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#textAval {font: bold;}</string>
-    </property>
-    <property name="text">
-     <string>AVAL</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="textAmont">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>110</y>
-      <width>111</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">#textAmont {font: bold; }</string>
-    </property>
-    <property name="text">
-     <string>AMONT</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
    <widget class="QLabel" name="bordureHaut">
     <property name="geometry">
      <rect>
@@ -865,6 +814,100 @@ background-color : white;
      <pixmap resource="images.qrc">:/images/porte1.png</pixmap>
     </property>
    </widget>
+   <widget class="QLabel" name="eauSas">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>140</y>
+      <width>281</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#eauSas {background-color : #c6e4ff;}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>631</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="textAval">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#textAval {font: bold;}</string>
+       </property>
+       <property name="text">
+        <string>AVAL</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="textAmont">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">#textAmont {font: bold; }</string>
+       </property>
+       <property name="text">
+        <string>AMONT</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <zorder>eauSas</zorder>
+   <zorder>bordureHaut</zorder>
+   <zorder>bordureBas</zorder>
+   <zorder>porteAval_Haut</zorder>
+   <zorder>porteAval_Bas</zorder>
+   <zorder>gridLayoutWidget</zorder>
+   <zorder>textSens</zorder>
+   <zorder>boutonArretUrgence</zorder>
+   <zorder>voyantAlarme</zorder>
+   <zorder>textEntrer_Amont_2</zorder>
+   <zorder>gridLayoutWidget_2</zorder>
+   <zorder>gridLayoutWidget_3</zorder>
+   <zorder>gridLayoutWidget_4</zorder>
+   <zorder>line_2</zorder>
+   <zorder>line_3</zorder>
+   <zorder>gridLayoutWidget_5</zorder>
+   <zorder>textEntrer_Amont_3</zorder>
+   <zorder>verticalLayoutWidget</zorder>
+   <zorder>verticalLayoutWidget_2</zorder>
+   <zorder>verticalLayoutWidget_3</zorder>
+   <zorder>verticalLayoutWidget_4</zorder>
+   <zorder>btnEntrerAval</zorder>
+   <zorder>btnSortirSas</zorder>
+   <zorder>btnEntrerAmont</zorder>
+   <zorder>porteAmont_Haut</zorder>
+   <zorder>porteAmont_Bas</zorder>
+   <zorder>horizontalLayoutWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
