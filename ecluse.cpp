@@ -28,7 +28,7 @@ Ecluse::Ecluse(QWidget *parent) :
     anglePorteAval(45),
     anglePorteAmont(45),
     niveau(NIVEAU_MOYEN),
-    niveau_timer(new QTimer(this)),
+ //   niveau_timer(new QTimer(this)),
     mode(0)
 {
     ui->setupUi(this);
@@ -74,8 +74,8 @@ Ecluse::Ecluse(QWidget *parent) :
     connect(this,SIGNAL(finAlarme()),vanneAmont,SLOT(finAlarme()));
     connect(this,SIGNAL(finAlarme()),vanneAval,SLOT(finAlarme()));
 
-    niveau_timer->setSingleShot(true);
-    connect(niveau_timer,SIGNAL(timeout()),this,SLOT(niveauAtteint()));
+//    niveau_timer->setSingleShot(true);
+//   connect(niveau_timer,SIGNAL(timeout()),this,SLOT(niveauAtteint(int mode)));
 
     // lancement des threads
     porteAval->run();
@@ -85,7 +85,7 @@ Ecluse::Ecluse(QWidget *parent) :
 }
 
 Ecluse::~Ecluse() {
-    niveau_timer->stop();
+//    niveau_timer->stop();
     delete ui;
 }
 
@@ -351,6 +351,7 @@ void Ecluse::on_btnSortirSas_clicked()
             emit ui->signalEntreeAval->buttonClicked(ui->rougeEntrer_Aval);
             ui->statusBar->showMessage("Sortie vers l'amont, fermeture des portes..");
             // FERMETURE DE LA PORTE
+            emit fermerVanneAval();
             emit fermerPorteAval();
         }
         else if (sens == SENS_AVAL)
@@ -359,6 +360,7 @@ void Ecluse::on_btnSortirSas_clicked()
             emit ui->signalEntreeAmont->buttonClicked(ui->rougeEntrer_Amont);
             ui->statusBar->showMessage("Sortie vers l'aval, fermeture des portes..");
             // FERMETURE DE LA PORTE
+            emit fermerVanneAmont();
             emit fermerPorteAmont();
         }
     }
@@ -404,16 +406,82 @@ void Ecluse::on_voyantAlarme_clicked() {
  * @brief Ouvre resp. ferme la vanne concernée.
  */
 void Ecluse::on_ouvrirVanneAval_clicked() {
-    emit ouvrirVanneAval();
+    int attente = 0;
+    QPixmap pixmap_ferme = QPixmap (":/images/vanneouverte.png");
+    QString msg = "";
+    ui->imageVanneAval->setPixmap(pixmap_ferme);
+    vanneAval->setEtat(ETAT_OUVERT);
+    if (niveau == NIVEAU_MOYEN) {
+        niveau = NIVEAU_BAS;
+        attente = 5000;
+    } else if (niveau == NIVEAU_HAUT && vanneAmont->getEtat() == ETAT_FERME) {
+        niveau = NIVEAU_BAS;
+        attente = 10000;
+        msg = "Etat actuel: diminution du niveau d'eau...";
+    } else if (niveau == NIVEAU_HAUT && vanneAmont->getEtat() == ETAT_OUVERT){
+        niveau = NIVEAU_MOYEN;
+        attente = 5000;
+        msg = "Etat actuel: diminution du niveau d'eau...";
+    }
+    QTimer::singleShot(attente,this,SLOT(niveauAtteint()));
+    ui->statusBar->showMessage(msg);
 }
 void Ecluse::on_ouvrirVanneAmont_clicked() {
-    emit ouvrirVanneAmont();
+    int attente = 0;
+    QString msg = "";
+    QPixmap pixmap_ferme = QPixmap (":/images/vanneouverte.png");
+    ui->imageVanneAmont->setPixmap(pixmap_ferme);
+    vanneAmont->setEtat(ETAT_OUVERT);
+    if (niveau == NIVEAU_MOYEN) {
+        niveau = NIVEAU_HAUT;
+        attente = 5000;
+    } else if (niveau == NIVEAU_BAS && vanneAval->getEtat() == ETAT_FERME) {
+        niveau = NIVEAU_HAUT;
+        attente = 10000;
+        msg = "Etat actuel: augmentation du niveau d'eau...";
+    } else if (niveau == NIVEAU_BAS && vanneAval->getEtat() == ETAT_OUVERT){
+        niveau = NIVEAU_MOYEN;
+        attente = 5000;
+        msg = "Etat actuel: augmentation du niveau d'eau...";
+    }
+    QTimer::singleShot(attente,this,SLOT(niveauAtteint()));
+    ui->statusBar->showMessage(msg);
 }
 void Ecluse::on_fermerVanneAval_clicked(){
-    emit fermerVanneAval();
+    int attente = 0;
+    QPixmap pixmap_ferme = QPixmap (":/images/vannefermee.png");
+    QString msg = "";
+    ui->imageVanneAval->setPixmap(pixmap_ferme);
+    vanneAval->setEtat(ETAT_FERME);
+    if (niveau == NIVEAU_MOYEN && vanneAmont->getEtat() == ETAT_OUVERT) {
+        niveau = NIVEAU_HAUT;
+        attente = 5000;
+        msg = "Etat actuel: augmentation du niveau d'eau...";
+    } else if (niveau == NIVEAU_BAS && vanneAmont->getEtat() == ETAT_OUVERT) {
+        niveau = NIVEAU_HAUT;
+        attente = 10000;
+        msg = "Etat actuel: augmentation du niveau d'eau...";
+    }
+    QTimer::singleShot(attente,this,SLOT(niveauAtteint()));
+    ui->statusBar->showMessage(msg);
 }
 void Ecluse::on_fermerVanneAmont_clicked() {
-    emit fermerVanneAmont();
+    int attente = 0;
+    QString msg = "";
+    QPixmap pixmap_ferme = QPixmap (":/images/vannefermee.png");
+    ui->imageVanneAmont->setPixmap(pixmap_ferme);
+    vanneAmont->setEtat(ETAT_FERME);
+    if (niveau == NIVEAU_MOYEN && vanneAval->getEtat() == ETAT_OUVERT) {
+        niveau = NIVEAU_BAS;
+        attente = 5000;
+        msg = "Etat actuel: diminution du niveau d'eau...";
+    } else if (niveau == NIVEAU_HAUT && vanneAval->getEtat() == ETAT_OUVERT) {
+        niveau = NIVEAU_BAS;
+        attente = 10000;
+        msg = "Etat actuel: diminution du niveau d'eau...";
+    }
+    QTimer::singleShot(attente,this,SLOT(niveauAtteint()));
+    ui->statusBar->showMessage(msg);
 }
 
 /**
@@ -435,7 +503,8 @@ void Ecluse::changementEtatVanneAval(int etat) {
             }
             niveau = NIVEAU_BAS; //niveau de l'eau à la fin
             ui->statusBar->showMessage("Etat actuel : diminution du niveau d'eau du sas");
-            niveau_timer->start(attente);
+            QTimer::singleShot(attente,this,SLOT(niveauAtteint_ouvrirPortes()));
+            //niveau_timer->start(attente);
         } else if (!sas_occupe && sens == SENS_AMONT) {
             if (niveau == NIVEAU_MOYEN) {
                 attente = 5000;
@@ -444,7 +513,8 @@ void Ecluse::changementEtatVanneAval(int etat) {
             }
             niveau = NIVEAU_BAS;
             ui->statusBar->showMessage("Etat actuel : diminution du niveau d'eau du sas");
-            niveau_timer->start(attente);
+            QTimer::singleShot(attente,this,SLOT(niveauAtteint_ouvrirPortes()));
+            //niveau_timer->start(attente);
         }
     } else if (etat == ETAT_ALARME) {
         ui->imageVanneAmont->setPixmap(pixmap_ferme);
@@ -466,7 +536,8 @@ void Ecluse::changementEtatVanneAmont(int etat) {
             }
             niveau = NIVEAU_HAUT; //niveau de l'eau à la fin
             ui->statusBar->showMessage("Etat actuel : élevation du niveau d'eau du sas");
-            niveau_timer->start(attente);
+            QTimer::singleShot(attente,this,SLOT(niveauAtteint_ouvrirPortes()));
+            //niveau_timer->start(attente);
         } else if (!sas_occupe && sens == SENS_AVAL) {
             if (niveau == NIVEAU_MOYEN) {
                 attente = 5000;
@@ -475,7 +546,8 @@ void Ecluse::changementEtatVanneAmont(int etat) {
             }
             niveau = NIVEAU_HAUT;
             ui->statusBar->showMessage("Etat actuel : élevation du niveau d'eau du sas");
-            niveau_timer->start(attente);
+            QTimer::singleShot(attente,this,SLOT(niveauAtteint_ouvrirPortes()));
+            //niveau_timer->start(attente);
         }
     } else if (etat == ETAT_ALARME) {
         ui->imageVanneAmont->setPixmap(pixmap_ferme);
@@ -484,13 +556,11 @@ void Ecluse::changementEtatVanneAmont(int etat) {
 
 void Ecluse::on_ouvrirPorteAval_clicked() {
     if (niveau != NIVEAU_BAS) return;
-    if (porteAval->getEtat() != ETAT_OUVERT) return;
     emit ouvrirPorteAval();
 }
 
 void Ecluse::on_ouvrirPorteAmont_clicked() {
     if (niveau != NIVEAU_HAUT) return;
-    if (porteAmont->getEtat() != ETAT_OUVERT) return;
     emit ouvrirPorteAmont();
 }
 
@@ -515,6 +585,25 @@ void Ecluse::on_arreterPorteAmont_clicked() {
     emit arreterPorteAval();
 }
 
+void Ecluse::niveauAtteint_ouvrirPortes() {
+    niveauAtteint();
+    if (mode == MODE_AUTO) {
+        if (sas_occupe) {
+            if (sens == SENS_AMONT && niveau == NIVEAU_HAUT) {
+                emit ouvrirPorteAmont();
+            } else if (sens == SENS_AVAL && niveau == NIVEAU_BAS) {
+                emit ouvrirPorteAval();
+            }
+        } else {
+            if (sens == SENS_AMONT && niveau == NIVEAU_BAS) {
+                emit ouvrirPorteAval();
+            } else if (sens == SENS_AVAL && niveau == NIVEAU_HAUT) {
+                emit ouvrirPorteAmont();
+            }
+        }
+    }
+}
+
 void Ecluse::niveauAtteint() {
     if (niveau == NIVEAU_BAS) {
         ui->eauSas->setStyleSheet("#eauSas {background-color : #c5e1f9;}");
@@ -523,18 +612,6 @@ void Ecluse::niveauAtteint() {
     } else {
         ui->eauSas->setStyleSheet("#eauSas {background-color : #93ccff;}");
     }
-    if (sas_occupe) {
-        if (sens == SENS_AMONT && niveau == NIVEAU_HAUT) {
-            emit ouvrirPorteAmont();
-        } else if (sens == SENS_AVAL && niveau == NIVEAU_BAS) {
-            emit ouvrirPorteAval();
-        }
-    } else {
-        if (sens == SENS_AMONT && niveau == NIVEAU_BAS) {
-            emit ouvrirPorteAval();
-        } else if (sens == SENS_AVAL && niveau == NIVEAU_HAUT) {
-            emit ouvrirPorteAmont();
-        }
-    }
+    ui->statusBar->showMessage("Etat actuel : niveau d'eau stable atteint");
 }
 

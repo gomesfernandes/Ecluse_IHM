@@ -20,6 +20,7 @@ public:
     ~Porte();
     void run();
     int getEtat();
+    void setEtat(int e);
 
 public slots:
     void ouverture();

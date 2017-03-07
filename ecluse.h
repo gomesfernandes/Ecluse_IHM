@@ -34,6 +34,8 @@ public slots:
     void changementEtatPorteAmont(int etat);
     void changementEtatVanneAval(int etat);
     void changementEtatVanneAmont(int etat);
+    void niveauAtteint_ouvrirPortes();
+    void niveauAtteint();
 
 private slots:
     void on_btnEntrerAval_clicked();
@@ -52,7 +54,6 @@ private slots:
     void on_arreterPorteAmont_clicked();
     void on_actionAuthentifier_triggered();
     void on_btnSortirSas_clicked();
-    void niveauAtteint();
 
 signals:
    void ouvrirPorteAval();
@@ -89,7 +90,7 @@ private:
     int anglePorteAval;
     int anglePorteAmont;
     int niveau;
-    QTimer * niveau_timer;
+   // QTimer * niveau_timer;
     int mode;
 };
 

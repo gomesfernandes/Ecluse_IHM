@@ -125,3 +125,4 @@ void Porte::finAlarme(){
 }
 
 int Porte::getEtat() { return etat;}
+void Porte::setEtat(int e) {etat = e;}
