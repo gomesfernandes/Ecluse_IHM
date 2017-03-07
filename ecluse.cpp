@@ -29,7 +29,8 @@ Ecluse::Ecluse(QWidget *parent) :
     anglePorteAmont(45),
     niveau(NIVEAU_MOYEN),
     niveau_timer(new QTimer(this)),
-    mode(0)
+    mode(0),
+    simonlation(new Simulation(this))
 {
     ui->setupUi(this);
 
@@ -77,11 +78,16 @@ Ecluse::Ecluse(QWidget *parent) :
     niveau_timer->setSingleShot(true);
     connect(niveau_timer,SIGNAL(timeout()),this,SLOT(niveauAtteint()));
 
+
     // lancement des threads
     porteAval->run();
     porteAmont->run();
     vanneAmont->run();
     vanneAval->run();
+
+    // Simulation
+    connect(this,SIGNAL(init_simulation()),simonlation,SLOT(debutIntervalle()));
+    connect(simonlation,SIGNAL(launch_simu()),porteAval,SLOT(ouverture()));
 }
 
 Ecluse::~Ecluse() {
@@ -536,3 +542,18 @@ void Ecluse::niveauAtteint() {
     }
 }
 
+
+void Ecluse::on_actionQuitter_l_application_triggered()
+{
+        QApplication::quit();
+}
+
+void Ecluse::on_actionLancer_la_simulation_triggered()
+{
+        ui->statusBar->showMessage("Bienvenue sur la simulation, celle çi va commencer dans quelques secondes");
+        emit init_simulation();
+        /*
+        ui->statusBar->showMessage("Un bateau arrive du côté aval.... !");
+        //ui->statusBar->showMessage(" Le bateau est au calme dans le sas !");
+        */
+}

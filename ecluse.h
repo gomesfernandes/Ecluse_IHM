@@ -15,6 +15,8 @@
 #include "constantes.h"
 #include "porte.h"
 #include "vanne.h"
+#include "simulation.h"
+
 
 namespace Ui {
 class Ecluse;
@@ -53,6 +55,8 @@ private slots:
     void on_actionAuthentifier_triggered();
     void on_btnSortirSas_clicked();
     void niveauAtteint();
+    void on_actionQuitter_l_application_triggered();
+    void on_actionLancer_la_simulation_triggered();
 
 signals:
    void ouvrirPorteAval();
@@ -67,6 +71,8 @@ signals:
    void fermerVanneAmont();
    void arretUrgence();
    void finAlarme();
+   void init_simulation();
+   void lancer_simulation();
 
 private:
     void setSignauxEnabled(bool visibilite);
@@ -91,6 +97,7 @@ private:
     int niveau;
     QTimer * niveau_timer;
     int mode;
+    Simulation * simonlation;
 };
 
 #endif // ECLUSE_H

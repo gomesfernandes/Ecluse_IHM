@@ -31,5 +31,10 @@ const int NIVEAU_BAS = -1;
 const char FEU_ROUGE = 'r';
 const char FEU_VERT = 'v';
 
+//simulation
+const int ETAT_INIT = 7 ;
+const int ETAT_EN_SIMULATION = 8;
+const int ETAT_FIN_SIMULATION = 9;
+
 
 #endif // CONSTANTES_H
