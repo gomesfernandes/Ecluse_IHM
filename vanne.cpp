@@ -9,7 +9,7 @@
 
 Vanne::Vanne(QObject * parent):
     QThread(parent),
-    etat(ETAT_FERME)
+    etat(ETAT_OUVERT)
 {
 }
 
@@ -63,3 +63,6 @@ void Vanne::panne(){
 void Vanne::finAlarme(){
     etat = ETAT_FERME;
 }
+
+int Vanne::getEtat() { return etat;}
+void Vanne::setEtat(int e) {etat = e;}
