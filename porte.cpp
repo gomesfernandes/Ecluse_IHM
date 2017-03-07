@@ -123,3 +123,5 @@ void Porte::panne(){
 void Porte::finAlarme(){
     etat = ETAT_ARRETE;
 }
+
+int Porte::getEtat() { return etat;}

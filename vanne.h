@@ -17,7 +17,7 @@ class Vanne : public QThread
 public:
     Vanne(QObject * parent = 0);
     void run();
-
+    int getEtat();
 
 public slots:
     void urgence();

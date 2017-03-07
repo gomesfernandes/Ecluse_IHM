@@ -484,11 +484,13 @@ void Ecluse::changementEtatVanneAmont(int etat) {
 
 void Ecluse::on_ouvrirPorteAval_clicked() {
     if (niveau != NIVEAU_BAS) return;
+    if (porteAval->getEtat() != ETAT_OUVERT) return;
     emit ouvrirPorteAval();
 }
 
 void Ecluse::on_ouvrirPorteAmont_clicked() {
     if (niveau != NIVEAU_HAUT) return;
+    if (porteAmont->getEtat() != ETAT_OUVERT) return;
     emit ouvrirPorteAmont();
 }
 

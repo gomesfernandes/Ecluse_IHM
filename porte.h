@@ -19,6 +19,7 @@ public:
     Porte(QObject * parent = 0);
     ~Porte();
     void run();
+    int getEtat();
 
 public slots:
     void ouverture();

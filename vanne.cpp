@@ -63,3 +63,5 @@ void Vanne::panne(){
 void Vanne::finAlarme(){
     etat = ETAT_FERME;
 }
+
+int Vanne::getEtat() { return etat;}

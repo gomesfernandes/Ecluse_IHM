@@ -830,56 +830,56 @@ background-color : white;
      <string/>
     </property>
    </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
+   <widget class="QLabel" name="textAmont">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>100</y>
-      <width>631</width>
-      <height>41</height>
+      <x>580</x>
+      <y>110</y>
+      <width>91</width>
+      <height>31</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="textAval">
-       <property name="font">
-        <font>
-         <pointsize>20</pointsize>
-         <weight>75</weight>
-         <italic>false</italic>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">#textAval {font: bold;}</string>
-       </property>
-       <property name="text">
-        <string>AVAL</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="textAmont">
-       <property name="font">
-        <font>
-         <pointsize>20</pointsize>
-         <weight>75</weight>
-         <italic>false</italic>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">#textAmont {font: bold; }</string>
-       </property>
-       <property name="text">
-        <string>AMONT</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#textAmont {font: bold; }</string>
+    </property>
+    <property name="text">
+     <string>AMONT</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="textAval">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>110</y>
+      <width>61</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">#textAval {font: bold;}</string>
+    </property>
+    <property name="text">
+     <string>AVAL</string>
+    </property>
    </widget>
    <zorder>eauSas</zorder>
    <zorder>bordureHaut</zorder>
@@ -907,7 +907,9 @@ background-color : white;
    <zorder>btnEntrerAmont</zorder>
    <zorder>porteAmont_Haut</zorder>
    <zorder>porteAmont_Bas</zorder>
-   <zorder>horizontalLayoutWidget</zorder>
+   <zorder>textAval</zorder>
+   <zorder>textAmont</zorder>
+   <zorder>textAval</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -947,9 +949,9 @@ background-color : white;
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="signalSortieAval"/>
   <buttongroup name="signalSortieAmont"/>
-  <buttongroup name="signalEntreeAval"/>
   <buttongroup name="signalEntreeAmont"/>
+  <buttongroup name="signalSortieAval"/>
+  <buttongroup name="signalEntreeAval"/>
  </buttongroups>
 </ui>
