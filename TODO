@@ -1,5 +1,5 @@
 - quand on déclenche l'alarme, griser les boutons  
 - ne pas permettre l'interruption d'une manoeuvre 
 - ajout onglet simulation
-- mettre beau moyen clair 5 sec après ouverture d'une porte
+- mettre eau du sas bleu moyen clair si ouverture vanne en cours et le niveau du sas est différent du niveau porte
 - tester les niveaux d'eau avant ouverture des portes à l'entrée
