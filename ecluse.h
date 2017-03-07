@@ -39,6 +39,11 @@ public slots:
     void niveauAtteint_ouvrirPortes();
     void niveauAtteint();
 
+    void bateau_sas();
+    void bateau_dehors();
+    void reset_simulation();
+    void over();
+
 private slots:
     void on_btnEntrerAval_clicked();
     void on_btnEntrerAmont_clicked();
@@ -56,9 +61,9 @@ private slots:
     void on_arreterPorteAmont_clicked();
     void on_actionAuthentifier_triggered();
     void on_btnSortirSas_clicked();
-    void niveauAtteint();
     void on_actionQuitter_l_application_triggered();
     void on_actionLancer_la_simulation_triggered();
+
 
 signals:
    void ouvrirPorteAval();
@@ -75,6 +80,9 @@ signals:
    void finAlarme();
    void init_simulation();
    void lancer_simulation();
+   void continuer_simu();
+   void init_simulation(int);
+   void finir_simu();
 
 private:
     void setSignauxEnabled(bool visibilite);
@@ -100,6 +108,7 @@ private:
    // QTimer * niveau_timer;
     int mode;
     Simulation * simonlation;
+    bool boolsimu;
 };
 
 #endif // ECLUSE_H

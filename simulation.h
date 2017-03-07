@@ -21,12 +21,14 @@ public:
     void run();
 
 public slots:
-    void debutIntervalle();
+    void debutIntervalle(int etat);
     void finIntervalle();
 
 signals:
-    void etatCourant(int etat);
     void launch_simu();
+    void sortie_bateau_sas();
+    void bateau_out();
+    void final();
 private:
     int etat;
     QTimer * intervalle;

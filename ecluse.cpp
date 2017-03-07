@@ -30,8 +30,8 @@ Ecluse::Ecluse(QWidget *parent) :
     niveau(NIVEAU_MOYEN),
     mode(0),
     simonlation(new Simulation(this)),
+    boolsimu(false)
  //   niveau_timer(new QTimer(this)),
-    mode(0)
 {
     ui->setupUi(this);
 
@@ -76,6 +76,8 @@ Ecluse::Ecluse(QWidget *parent) :
     connect(this,SIGNAL(finAlarme()),vanneAmont,SLOT(finAlarme()));
     connect(this,SIGNAL(finAlarme()),vanneAval,SLOT(finAlarme()));
 
+
+
 //    niveau_timer->setSingleShot(true);
 //   connect(niveau_timer,SIGNAL(timeout()),this,SLOT(niveauAtteint(int mode)));
 
@@ -85,10 +87,20 @@ Ecluse::Ecluse(QWidget *parent) :
     porteAmont->run();
     vanneAmont->run();
     vanneAval->run();
+    simonlation->run();
 
     // Simulation
-    connect(this,SIGNAL(init_simulation()),simonlation,SLOT(debutIntervalle()));
-    connect(simonlation,SIGNAL(launch_simu()),porteAval,SLOT(ouverture()));
+
+    connect(this,SIGNAL(init_simulation(int)),simonlation,SLOT(debutIntervalle(int)));
+    connect(simonlation,SIGNAL(launch_simu()),this,SLOT(on_btnEntrerAval_clicked())); // ****
+    connect(this,SIGNAL(continuer_simu()),this,SLOT(bateau_sas()));
+    connect(simonlation,SIGNAL(sortie_bateau_sas()),this,SLOT(on_btnSortirSas_clicked()));
+    connect(this,SIGNAL(finir_simu()),this,SLOT(bateau_dehors()));
+    connect(simonlation,SIGNAL(bateau_out()),this,SLOT(reset_simulation()));
+    connect(simonlation,SIGNAL(final()),this,SLOT(over()));
+
+    //connect(simonlation,SIGNAL(bateau()),this,SLOT(bateau_dehors()));
+            //simonlation,SLOT(debutIntervalle(int)));
 }
 
 Ecluse::~Ecluse() {
@@ -170,6 +182,8 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
             ui->sensAval->setEnabled(true);
         setSignauxEnabled(true);
         ui->voyantAlarme->setEnabled(true);
+        if(ui->menuSimulation!= NULL)
+            ui->menuSimulation->setEnabled(true);
     }
     this->mode = mode;
 }
@@ -275,6 +289,8 @@ void Ecluse::changementEtatPorteAval(int etat) {
         }
         compteurPorteAval = 9;
         ui->statusBar->showMessage("Etat actuel: Passage par porte aval libre");
+        if(boolsimu==true)
+            emit continuer_simu();
         break;
     }
 }
@@ -298,6 +314,8 @@ void Ecluse::changementEtatPorteAmont(int etat) {
         if (sas_occupe) {
             emit ouvrirVanneAval();
         }
+        if(boolsimu==true)
+            emit simonlation->debutIntervalle(OVER);
         compteurPorteAmont=9;
         // set couleur bleu clair
         break;
@@ -323,6 +341,8 @@ void Ecluse::changementEtatPorteAmont(int etat) {
         compteurPorteAmont=9;
         sas_occupe = (sas_occupe) ? false : true;
         ui->statusBar->showMessage("Etat actuel: Passage par porte amont libre");
+        if(boolsimu==true)
+            emit finir_simu();
         break;
     }
 }
@@ -395,6 +415,8 @@ void Ecluse::on_boutonArretUrgence_clicked() {
             ui->sensAmont->setEnabled(false);
         if(ui->sensAval != NULL)
             ui->sensAval->setEnabled(false);
+        if(ui->menuSimulation!= NULL)
+            ui->menuSimulation->setEnabled(false);
     }
     emit arretUrgence();
 }
@@ -630,10 +652,35 @@ void Ecluse::on_actionQuitter_l_application_triggered()
 
 void Ecluse::on_actionLancer_la_simulation_triggered()
 {
-        ui->statusBar->showMessage("Bienvenue sur la simulation, celle çi va commencer dans quelques secondes");
-        emit init_simulation();
-        /*
-        ui->statusBar->showMessage("Un bateau arrive du côté aval.... !");
-        //ui->statusBar->showMessage(" Le bateau est au calme dans le sas !");
-        */
+        this->sens = SENS_AMONT;
+        this->boolsimu = true;
+        ui->statusBar->showMessage("Bienvenue sur la simulation.. Un bateau arrive du côté aval !!!");
+        emit init_simulation(ETAT_INIT);
+}
+
+void Ecluse::bateau_sas()
+{
+          ui->statusBar->showMessage(" Le bateau est au calme dans le sas !");
+          emit init_simulation(ETAT_EN_SIMULATION);
+}
+
+void Ecluse::bateau_dehors()
+{
+          ui->statusBar->showMessage(" Le bateau peut sortir du sas ");
+          emit init_simulation(ETAT_FIN_SIMULATION);
+}
+
+void Ecluse::reset_simulation()
+{
+    ui->statusBar->showMessage("La simulation est terminée! Reset de l'interface..");
+    emit fermerVanneAmont();
+    emit fermerPorteAmont();
+}
+
+void Ecluse::over()
+{
+    ui->statusBar->showMessage("Interface prête à l'emploi. Appuyez sur un bouton...");
+    boolsimu=false;
+    ui->vertSortir_Amont->setChecked(false);
+    ui->rougeSortir_Amont->setChecked(true);
 }

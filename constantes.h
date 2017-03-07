@@ -35,6 +35,7 @@ const char FEU_VERT = 'v';
 const int ETAT_INIT = 7 ;
 const int ETAT_EN_SIMULATION = 8;
 const int ETAT_FIN_SIMULATION = 9;
+const int OVER = 10;
 
 
 #endif // CONSTANTES_H

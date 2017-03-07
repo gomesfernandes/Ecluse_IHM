@@ -825,7 +825,7 @@ background-color : white;
     </property>
     <property name="styleSheet">
      <string notr="true">#eauAval { 
-	background-color : #F0F8FF;
+	background-color : #c5e1f9;
 }</string>
     </property>
     <property name="text">
@@ -842,7 +842,7 @@ background-color : white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">#eauSas {background-color : #c6e4ff;}</string>
+     <string notr="true">#eauSas {background-color : #93ccff;}</string>
     </property>
     <property name="text">
      <string/>
@@ -859,8 +859,9 @@ background-color : white;
     </property>
     <property name="styleSheet">
      <string notr="true">#eauAmont { 
-	background-color : #00008B;
-}</string>
+	background-color : #2e97f7;
+}
+</string>
     </property>
     <property name="text">
      <string/>
@@ -962,7 +963,21 @@ background-color : white;
     </property>
     <addaction name="actionAuthentifier"/>
    </widget>
+   <widget class="QMenu" name="menuSimulation">
+    <property name="title">
+     <string>Simulation</string>
+    </property>
+    <addaction name="actionLancer_la_simulation"/>
+   </widget>
+   <widget class="QMenu" name="menuQuitter">
+    <property name="title">
+     <string>Quitter</string>
+    </property>
+    <addaction name="actionQuitter_l_application"/>
+   </widget>
    <addaction name="menuEcluse"/>
+   <addaction name="menuSimulation"/>
+   <addaction name="menuQuitter"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -978,6 +993,16 @@ background-color : white;
     <string>Authentifier</string>
    </property>
   </action>
+  <action name="actionLancer_la_simulation">
+   <property name="text">
+    <string>Lancer la simulation</string>
+   </property>
+  </action>
+  <action name="actionQuitter_l_application">
+   <property name="text">
+    <string>Quitter l'application</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
@@ -985,9 +1010,9 @@ background-color : white;
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="signalSortieAval"/>
   <buttongroup name="signalEntreeAval"/>
   <buttongroup name="signalSortieAmont"/>
   <buttongroup name="signalEntreeAmont"/>
+  <buttongroup name="signalSortieAval"/>
  </buttongroups>
 </ui>

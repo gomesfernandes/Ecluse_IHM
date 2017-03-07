@@ -30,15 +30,23 @@ Simulation::~Simulation() {
 */
 void Simulation::run() {}
 
-void Simulation::debutIntervalle() {
+void Simulation::debutIntervalle(int etat) {
     if (etat != ETAT_ALARME)  {
-        qDebug() << "Lancement timer 2 sec" << endl;
-        intervalle->start(2000);
+        qDebug() << "Lancement timer 5 sec" << endl;
+        intervalle->start(5000);
     }
+    this->etat = etat;
 }
 
 void Simulation::finIntervalle() {
      intervalle->stop();
      qDebug() << "Fin du timer" << endl;
-     emit launch_simu();
+     if(etat == ETAT_INIT)
+        emit launch_simu();
+     else if(etat== ETAT_EN_SIMULATION)
+         emit sortie_bateau_sas();
+     else if(etat== ETAT_FIN_SIMULATION)
+         emit bateau_out();
+     else if (etat == OVER)
+         emit final();
 }
