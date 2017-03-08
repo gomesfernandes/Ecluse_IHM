@@ -28,14 +28,16 @@ SOURCES += main.cpp\
     loginwindow.cpp \
     signallumineux.cpp \
     porte.cpp \
-    vanne.cpp
+    vanne.cpp \
+    simulation.cpp
 
 HEADERS  += ecluse.h \
     loginwindow.h \
     signallumineux.h \
     porte.h \
     vanne.h \
-    constantes.h
+    constantes.h \
+    simulation.h
 
 FORMS    += ecluse.ui \
     loginwindow.ui
