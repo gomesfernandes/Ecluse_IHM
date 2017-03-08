@@ -183,7 +183,7 @@ void Ecluse::ouvertureFenetreEcluse(int mode) {
         setSignauxEnabled(true);
         ui->voyantAlarme->setEnabled(true);
         if(ui->menuSimulation!= NULL)
-            ui->menuSimulation->setEnabled(true);
+            ui->menuSimulation->setEnabled(false);
     }
     this->mode = mode;
 }
