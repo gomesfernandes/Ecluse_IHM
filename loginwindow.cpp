@@ -45,10 +45,7 @@ void LoginWindow::keyPressEvent(QKeyEvent *event)
     if(event->key() == Qt::Key_Escape)
     {
         QApplication::quit();
-    } else if(event->key() == Qt::Key_Control)
-    {
-        on_ConnextionBtn_clicked();
-    } else if ( (event->key()==Qt::Key_Enter) || (event->key()==Qt::Key_Return) )
+    } else if( (event->key()==Qt::Key_Enter) || (event->key()==Qt::Key_Return) )
     {
         on_ConnextionBtn_clicked();
     }
