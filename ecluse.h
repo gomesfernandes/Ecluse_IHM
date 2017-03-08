@@ -10,6 +10,7 @@
 
 #include <QMainWindow>
 #include <QAbstractButton>
+#include <QKeyEvent>
 #include "loginwindow.h"
 #include "signallumineux.h"
 #include "constantes.h"
@@ -63,6 +64,7 @@ private slots:
     void on_btnSortirSas_clicked();
     void on_actionQuitter_l_application_triggered();
     void on_actionLancer_la_simulation_triggered();
+    void keyPressEvent(QKeyEvent *event);
 
 
 signals:

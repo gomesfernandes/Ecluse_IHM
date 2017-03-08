@@ -650,6 +650,14 @@ void Ecluse::on_actionQuitter_l_application_triggered()
         QApplication::quit();
 }
 
+void Ecluse::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        QApplication::quit();
+    }
+}
+
 void Ecluse::on_actionLancer_la_simulation_triggered()
 {
         this->sens = SENS_AMONT;

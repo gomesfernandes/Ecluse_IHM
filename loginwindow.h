@@ -10,6 +10,7 @@
 
 #include <QMainWindow>
 #include <QMap>
+#include <QKeyEvent>
 #include "constantes.h"
 
 namespace Ui {
@@ -30,6 +31,10 @@ signals:
 private slots:
     void on_NonAuthBtn_clicked();
     void on_ConnextionBtn_clicked();
+
+protected :
+    void keyPressEvent(QKeyEvent *);
+
 
 private:
     Ui::LoginWindow *ui;

@@ -9,6 +9,7 @@
 #include "ui_loginwindow.h"
 #include <QMap>
 
+
 LoginWindow::LoginWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LoginWindow)
@@ -38,3 +39,17 @@ void LoginWindow::on_ConnextionBtn_clicked() {
     ui->loginUser->setText("");
     ui->MdpUser->setText("");
 }
+
+void LoginWindow::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Escape)
+    {
+        QApplication::quit();
+    }
+    if(event->key() == Qt::Key_Control)
+    {
+        on_ConnextionBtn_clicked();
+    }
+}
+
+
