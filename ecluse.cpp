@@ -248,7 +248,8 @@ void Ecluse::on_btnEntrerAmont_clicked() {
             //autre porte ouverte
             emit fermerPorteAval();
         }
-    }
+    } else
+        qDebug() << "???" << endl;
 }
 
 /**
