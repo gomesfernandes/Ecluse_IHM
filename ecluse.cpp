@@ -211,6 +211,10 @@ void Ecluse::on_btnEntrerAval_clicked() {
     if (!sas_occupe) {
         if( niveau == NIVEAU_BAS ) {
             emit ouvrirPorteAval();
+            ui->vertEntrer_Aval->setChecked(true);
+            ui->rougeSortir_Aval->setChecked(true);
+            emit ui->signalEntreeAval->buttonClicked(ui->vertEntrer_Aval);
+            emit ui->signalSortieAval->buttonClicked(ui->rougeSortir_Aval);
         } else if (niveau == NIVEAU_MOYEN) {
             //2 portes fermées et vannes ouvertes -> remplir le sas
             emit fermerVanneAmont();
@@ -229,8 +233,13 @@ void Ecluse::on_btnEntrerAmont_clicked() {
     sens = (ui->sensAmont->isChecked()) ? SENS_AMONT : SENS_AVAL;
     if (sens == SENS_AMONT) return;
     if (!sas_occupe) {
+        qDebug() << "entrée libre" << endl;
         if( niveau == NIVEAU_HAUT) {
             emit ouvrirPorteAmont();
+            ui->vertEntrer_Amont->setChecked(true);
+            ui->rougeSortir_Amont->setChecked(true);
+            emit ui->signalEntreeAmont->buttonClicked(ui->vertEntrer_Amont);
+            emit ui->signalSortieAmont->buttonClicked(ui->rougeSortir_Amont);
         } else if (niveau == NIVEAU_MOYEN) {
             //2 portes fermées et vannes ouvertes -> remplir le sas
             emit fermerVanneAval();
@@ -255,7 +264,7 @@ void Ecluse::changementEtatPorteAval(int etat) {
     switch (etat) {
     case ETAT_EN_OUVERTURE :
         ui->statusBar->showMessage("Ouverture de la porte aval. Temps d'attente "
-                                   "estimé :" +QString::number(compteurPorteAval));
+                                   "estimé : " +QString::number(compteurPorteAval));
         compteurPorteAval--;
         break;
     case ETAT_FERME:
@@ -268,7 +277,7 @@ void Ecluse::changementEtatPorteAval(int etat) {
         break;
     case ETAT_EN_FERMETURE:
         ui->statusBar->showMessage("Fermeture de la porte aval. Temps d'attente "
-                                   "estimé :" +QString::number(compteurPorteAval));
+                                   "estimé : " +QString::number(compteurPorteAval));
         compteurPorteAval--;
         break;
     case ETAT_OUVERT:
@@ -332,14 +341,15 @@ void Ecluse::changementEtatPorteAmont(int etat) {
             ui->vertSortir_Amont->setChecked(true);
             emit ui->signalEntreeAmont->buttonClicked(ui->rougeEntrer_Amont);
             emit ui->signalSortieAmont->buttonClicked(ui->vertSortir_Amont);
+            sas_occupe = false;
         } else {
             ui->vertEntrer_Amont->setChecked(true);
             ui->rougeSortir_Amont->setChecked(true);
             emit ui->signalEntreeAmont->buttonClicked(ui->vertEntrer_Amont);
             emit ui->signalSortieAmont->buttonClicked(ui->rougeSortir_Amont);
+            sas_occupe = true;
         }
         compteurPorteAmont=9;
-        sas_occupe = (sas_occupe) ? false : true;
         ui->statusBar->showMessage("Etat actuel: Passage par porte amont libre");
         if(boolsimu==true)
             emit finir_simu();

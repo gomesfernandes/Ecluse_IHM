@@ -67,7 +67,7 @@ void Porte::ouverture(){
         transition->start(10000);
         intervalles->start(1000);
         qDebug() << "ouverture de la porte" << endl;
-    } else if (etat == ETAT_OUVERT)
+    } else if (etat == ETAT_OUVERT || etat == ETAT_EN_OUVERTURE)
         emit etatCourant(etat);
 }
 
@@ -80,7 +80,7 @@ void Porte::fermeture(){
         transition->start(10000);
         intervalles->start(1000);
         qDebug() << " fermeture de la porte" << endl;
-    } else if (etat == ETAT_FERME)
+    } else if (etat == ETAT_FERME || etat == ETAT_EN_FERMETURE)
         emit etatCourant(etat);
 }
 
