@@ -9,5 +9,8 @@
         <file>images/vannefermee.png</file>
         <file>images/vanneouverte.png</file>
         <file>images/porteouverte.png</file>
+        <file>images/porte_en_ouverture.png</file>
+        <file>images/port_ouvrir_2.png</file>
+        <file>images/port_ouvrir.png</file>
     </qresource>
 </RCC>

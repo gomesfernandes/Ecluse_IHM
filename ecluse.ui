@@ -954,7 +954,7 @@ background-color : white;
      <x>0</x>
      <y>0</y>
      <width>683</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuEcluse">
@@ -1010,9 +1010,9 @@ background-color : white;
  </resources>
  <connections/>
  <buttongroups>
+  <buttongroup name="signalSortieAval"/>
+  <buttongroup name="signalEntreeAmont"/>
   <buttongroup name="signalEntreeAval"/>
   <buttongroup name="signalSortieAmont"/>
-  <buttongroup name="signalEntreeAmont"/>
-  <buttongroup name="signalSortieAval"/>
  </buttongroups>
 </ui>

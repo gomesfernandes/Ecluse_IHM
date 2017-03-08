@@ -34,6 +34,12 @@
        </item>
        <item row="0" column="0">
         <widget class="QLineEdit" name="lineEdit_3">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Login</string>
          </property>
@@ -47,6 +53,9 @@
        </item>
        <item row="1" column="0">
         <widget class="QLineEdit" name="lineEdit_4">
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Password</string>
          </property>
