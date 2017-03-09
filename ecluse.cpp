@@ -7,7 +7,9 @@
 
 #include "ecluse.h"
 #include "ui_ecluse.h"
-
+#include <QTransform>
+#include <QSize>
+#include <QtMath>
 
 
 Ecluse::Ecluse(QWidget *parent) :
@@ -30,7 +32,8 @@ Ecluse::Ecluse(QWidget *parent) :
     niveau(NIVEAU_MOYEN),
     mode(0),
     simonlation(new Simulation(this)),
-    boolsimu(false)
+    boolsimu(false),
+    compteur_rotation(0)
  //   niveau_timer(new QTimer(this)),
 {
     ui->setupUi(this);
@@ -312,11 +315,27 @@ void Ecluse::changementEtatPorteAmont(int etat) {
     QPixmap porte_haut = QPixmap (":/images/porte2.png");
     QPixmap porte_bas = QPixmap (":/images/porte1.png");
     QPixmap porteouverte = QPixmap (":/images/porteouverte.png");
+    //QSize S = ;
+    //QTransform trans;
+    //trans  = transform.scale(sqrt(porte_haut.size().width()),sqrt(porte_haut.size().height()));
+    //trans = transform.rotate(90);
+    //QPixmap porte_tournee = porte_haut.transformed(trans);
+    QTransform trans;
+    QPixmap porte_tournee;
     switch (etat) {
     case ETAT_EN_OUVERTURE :
+
         ui->statusBar->showMessage("Ouverture de la porte amont. Temps d'attente "
                         "estimé : "+QString::number(compteurPorteAmont));
         compteurPorteAmont--;
+        trans.translate(-(porte_haut.size().width())/2,-(porte_haut.size().height())/2);
+        trans.rotate(compteur_rotation);
+        trans.translate((porte_haut.size().width())/2,(porte_haut.size().height())/2);
+        compteur_rotation-=5;
+        porte_tournee= porte_haut.transformed(trans);
+        ui->porteAmont_Haut->setPixmap(porte_tournee);
+      // ui->porteAmont_Haut->setPixmap(porte_haut2.transformed(transform.rotate(45)));
+       //ui->porteAmont_Bas->setPixmap(porte_bas.transformed(transform.rotate(45)));
         break;
     case ETAT_FERME:
         ui->porteAmont_Haut->setPixmap(porte_haut);
