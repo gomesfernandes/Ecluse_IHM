@@ -111,6 +111,7 @@ private:
     int mode;
     Simulation * simonlation;
     bool boolsimu;
+    int compteur_rotation;
 };
 
 #endif // ECLUSE_H

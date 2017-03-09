@@ -328,14 +328,12 @@ void Ecluse::changementEtatPorteAmont(int etat) {
         ui->statusBar->showMessage("Ouverture de la porte amont. Temps d'attente "
                         "estimé : "+QString::number(compteurPorteAmont));
         compteurPorteAmont--;
-        trans.translate(-(porte_haut.size().width())/2,-(porte_haut.size().height())/2);
-        trans.rotate(compteur_rotation);
-        trans.translate((porte_haut.size().width())/2,(porte_haut.size().height())/2);
-        compteur_rotation-=5;
-        porte_tournee= porte_haut.transformed(trans);
-        ui->porteAmont_Haut->setPixmap(porte_tournee);
-      // ui->porteAmont_Haut->setPixmap(porte_haut2.transformed(transform.rotate(45)));
-       //ui->porteAmont_Bas->setPixmap(porte_bas.transformed(transform.rotate(45)));
+        //trans.translate((porte_haut.size().width())/2,(porte_haut.size().height())/2);
+        //trans.rotate(compteur_rotation);
+        //trans.translate((qreal)50-compteur_rotation,(qreal)50-compteur_rotation);
+        //porte_tournee= porte_haut.transformed(trans,Qt::SmoothTransformation);
+        //compteur_rotation-=10;
+        //ui->porteAmont_Haut->setPixmap(porte_tournee);
         break;
     case ETAT_FERME:
         ui->porteAmont_Haut->setPixmap(porte_haut);
